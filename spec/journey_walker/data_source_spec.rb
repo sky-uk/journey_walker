@@ -1,4 +1,5 @@
-require_relative '../../lib/journey_walker/journey'
+require_relative '../spec_helper'
+require_relative '../../lib/journey_walker'
 require_relative '../../lib/journey_walker/journey_error'
 require 'json'
 
@@ -71,27 +72,5 @@ describe JourneyWalker::Journey do
       expect { journey.perform_action(current_step, 'proceed') }
         .to raise_error(JourneyWalker::JourneyError, /cannot find data source method 'os'/i)
     end
-  end
-
-  def make_data_source_methods(os, install_method)
-    make_data_source_class
-    SomeThing::SomeWhere::OSAdviser.send(:define_method, 'os') { os }
-    SomeThing::SomeWhere::OSAdviser.send(:define_method, 'install_method') { install_method }
-  end
-
-  def make_data_source_class
-    some_where = make_data_source_module
-    some_where.const_set(:OSAdviser, Class.new)
-  end
-
-  def make_data_source_module
-    some_thing = Kernel.const_set(:SomeThing, Module.new)
-    some_thing.const_set(:SomeWhere, Module.new)
-  end
-
-  def remove_data_source_class
-    some_thing = Kernel.const_get(:SomeThing)
-    some_where = some_thing.const_get(:SomeWhere)
-    some_where.send(:remove_const, :OSAdviser)
   end
 end
