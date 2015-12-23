@@ -1,0 +1,101 @@
+{
+  "steps": [
+    {
+      "name": "intro"
+    },
+    {
+      "name": "linux apt-get"
+    },
+    {
+      "name": "linux rpm"
+    },
+    {
+      "name": "windows"
+    },
+    {
+      "name": "completed"
+    }
+  ],
+  "data_sources": [
+    {
+      "name": "OS Adviser",
+      "class_name": "SomeThing::SomeWhere::OSAdviser",
+      "methods": [
+        "os",
+        "install_method"
+      ]
+    }
+  ],
+  "transitions": [
+    {
+      "to": "intro",
+      "action": "start"
+    },
+    {
+      "from": "intro",
+      "to": "cancelled",
+      "action": "cancel"
+    },
+    {
+      "from": "intro",
+      "to": "linux apt-get",
+      "action": "proceed",
+      "data_switches": [
+        {
+          "source": "OS Adviser",
+          "method": "os",
+          "value": "linux"
+        },
+        {
+          "source": "OS Adviser",
+          "method": "install_method",
+          "value": "apt"
+        }
+      ]
+    },
+    {
+      "from": "intro",
+      "to": "linux rpm",
+      "action": "proceed",
+      "data_switches": [
+        {
+          "source": "OS Adviser",
+          "method": "os",
+          "value": "linux"
+        },
+        {
+          "source": "OS Adviser",
+          "method": "install_method",
+          "value": "rpm"
+        }
+      ]
+    },
+    {
+      "from": "intro",
+      "to": "windows",
+      "action": "proceed",
+      "data_switches": [
+        {
+          "source": "OS Adviser",
+          "method": "os",
+          "value": "windows"
+        }
+      ]
+    },
+    {
+      "from": "linux apt-get",
+      "to": "completed",
+      "action": "finish"
+    },
+    {
+      "from": "linux rpm",
+      "to": "completed",
+      "action": "finish"
+    },
+    {
+      "from": "windows",
+      "to": "completed",
+      "action": "finish"
+    }
+  ]
+}

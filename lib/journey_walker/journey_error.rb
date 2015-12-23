@@ -1,0 +1,2 @@
+class JourneyError < StandardError
+end
