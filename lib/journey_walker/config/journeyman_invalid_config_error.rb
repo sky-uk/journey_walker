@@ -1,2 +1,0 @@
-class JourneymanInvalidConfigError < StandardError
-end

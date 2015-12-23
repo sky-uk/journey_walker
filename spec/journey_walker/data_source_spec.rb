@@ -11,9 +11,9 @@ require 'json'
 #
 # i.e. an initial page followed by a page based on OS and package manager followed by a final page
 #
-describe Journey do
+describe JourneyWalker::Journey do
   let(:config) { JSON.parse(File.read('spec/journey_walker/config/installer.json'), symbolize_names: true) }
-  let(:journey) { Journey.new(config) }
+  let(:journey) { described_class.new(config) }
 
   context 'valid journeys' do
     after do
@@ -45,7 +45,7 @@ describe Journey do
       current_step = journey.start
       expect(current_step.name).to eq('intro')
       expect { journey.perform_action(current_step, 'proceed') }
-        .to raise_error(JourneyError, /proceed.*intro|intro*.proceed/)
+        .to raise_error(JourneyWalker::JourneyError, /proceed.*intro|intro*.proceed/)
     end
   end
 
@@ -57,7 +57,7 @@ describe Journey do
     it 'should raise an error when the data source class cannot be found' do
       current_step = journey.start
       expect { journey.perform_action(current_step, 'proceed') }
-        .to raise_error(JourneyError, /cannot find data source class 'SomeThing::SomeWhere::OSAdviser'/i)
+        .to raise_error(JourneyWalker::JourneyError, /cannot find data source class 'SomeThing::SomeWhere::OSAdviser'/i)
     end
   end
 
@@ -69,7 +69,7 @@ describe Journey do
     it 'should raise an error when the data source method cannot be found' do
       current_step = journey.start
       expect { journey.perform_action(current_step, 'proceed') }
-        .to raise_error(JourneyError, /cannot find data source method 'os'/i)
+        .to raise_error(JourneyWalker::JourneyError, /cannot find data source method 'os'/i)
     end
   end
 

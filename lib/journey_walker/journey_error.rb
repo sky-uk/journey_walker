@@ -1,2 +1,4 @@
-class JourneyError < StandardError
+module JourneyWalker
+  class JourneyError < StandardError
+  end
 end

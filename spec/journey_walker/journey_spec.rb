@@ -5,9 +5,9 @@ require 'json'
 #
 # The basic config loaded here is of the form step1->step2->step1->step2 etc.
 #
-describe Journey do
+describe JourneyWalker::Journey do
   let(:config) { JSON.parse(File.read('spec/journey_walker/config/basic_config.json'), symbolize_names: true) }
-  let(:journey) { Journey.new(config) }
+  let(:journey) { described_class.new(config) }
 
   it 'should return the initial step on start' do
     initial_step = journey.start
@@ -27,12 +27,12 @@ describe Journey do
   it 'should throw an exception for an unknown action' do
     current_step = journey.start
     expect { journey.perform_action(current_step, 'unknown_action') }
-      .to raise_error(JourneyError, /(unknown_action.*step1|step1.*unknown_action)/i)
+      .to raise_error(JourneyWalker::JourneyError, /(unknown_action.*step1|step1.*unknown_action)/i)
   end
 
   it 'should throw an exception when multiple actions are valid' do
     current_step = journey.start
     expect { journey.perform_action(current_step, 'secondary_proceed') }
-      .to raise_error(JourneyError, /(secondary_proceed.*too many|too many.*secondary_proceed)/i)
+      .to raise_error(JourneyWalker::JourneyError, /(secondary_proceed.*too many|too many.*secondary_proceed)/i)
   end
 end
