@@ -11,7 +11,7 @@ module JourneyWalker
       attr_reader :transitions
 
       def initialize(config)
-        ConfigValidator.validate(config)
+        ConfigValidator.new.validate(config)
         parse(config)
       end
 
