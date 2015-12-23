@@ -1,5 +1,5 @@
 require 'json'
-require_relative '../../lib/journey_walker/journey'
+require_relative '../../lib/journey_walker'
 
 describe JourneyWalker::Journey do
   let(:invalid_config) { JSON.parse(File.read('spec/journey_walker/config/basic_config.json'), symbolize_names: true) }
@@ -31,7 +31,7 @@ describe JourneyWalker::Journey do
   it 'should not accept transition with no "to:"' do
     invalid_config[:transitions].find { |value| value.key?(:from) }.reject! { |key, _value| key == :to }
 
-    expected_error = /no to: defined on transition '{"from":"step1","action":"proceed"}'/i
+    expected_error = /no to: defined on transition "{"from":"step1","action":"proceed"}"/i
     expect { described_class.new(invalid_config) }.to raise_error(JourneyWalker::Config::InvalidConfigError,
                                                                   expected_error)
   end
@@ -39,7 +39,7 @@ describe JourneyWalker::Journey do
   it 'should not accept transition with no action' do
     invalid_config[:transitions].first.reject! { |key, _value| key == :action }
     expect { described_class.new(invalid_config) }.to raise_error(JourneyWalker::Config::InvalidConfigError,
-                                                                  /no action defined on transition '{"to":"step1"}'/i)
+                                                                  /no action defined on transition "{"to":"step1"}"/i)
   end
 
   it 'should not accept a transition with invalid to: step' do

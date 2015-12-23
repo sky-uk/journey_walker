@@ -25,6 +25,6 @@ describe JourneyWalker::Journey do
   it 'should not accept data switch with unknown data source' do
     invalid_config[:transitions][2][:data_switches][0][:source] = 'some source'
     expect { described_class.new(invalid_config) }.to raise_error(JourneyWalker::Config::InvalidConfigError,
-                                                                  /unknown data source 'some source'/i)
+                                                                  /unknown data source "some source"/i)
   end
 end

@@ -1,9 +1,12 @@
+require 'r18n-core'
 require_relative 'config/journey_config'
 require_relative 'journey_error'
 
 module JourneyWalker
   # This is the class which manages a journeyman journey, loaded from the json representation.
   class Journey
+    include R18n::Helpers
+
     def initialize(config)
       @config = JourneyWalker::Config::JourneyConfig.new(config)
     end
@@ -45,7 +48,7 @@ module JourneyWalker
       method_response = data_source_class.new.send(data_switch.method)
       return method_response == data_switch.value
     rescue
-      raise(JourneyError, "Cannot find data source method '#{data_switch.method}'")
+      raise(JourneyError, t.error.data_source_method_missing(data_switch.method))
     end
 
     def data_source_class(data_source)
@@ -53,15 +56,12 @@ module JourneyWalker
         scope.const_get(module_or_class)
       end
     rescue
-      raise(JourneyError, "Cannot find data source class '#{data_source.class_name}' "\
-                        "for data source '#{data_source.name}'")
+      raise(JourneyError, t.error.data_source_class_missing(data_source.class_name, data_source.name))
     end
 
     def validate_actions(action, current_step, transitions)
-      fail JourneyError,
-           "Could not find action '#{action}' for step '#{current_step.name}'" if transitions.empty?
-      fail JourneyError,
-           "Too many actions for action named '#{action}' for step '#{current_step.name}'" if transitions.size > 1
+      fail JourneyError, t.error.unknown_action(action, current_step.name) if transitions.empty?
+      fail JourneyError, t.error.too_many_actions(action, current_step.name) if transitions.size > 1
     end
 
     def initial_step

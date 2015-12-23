@@ -1,4 +1,6 @@
 Metrics/LineLength:
   Max: 120
 
-
+Metrics/AbcSize:
+  Exclude:
+    - lib/journey_walker/config/config_validator.rb
