@@ -3,6 +3,7 @@ require_relative '../../../lib/journey_walker/data_sources/custom_config'
 require_relative '../../../lib/journey_walker'
 require_relative '../../../lib/journey_walker/data_sources/custom'
 require_relative '../../../lib/journey_walker/journey_error'
+require_relative '../../../lib/journey_walker/config/data_source_call_parameter_config'
 
 describe JourneyWalker::DataSources::Custom do
   let(:data_source) do
@@ -10,7 +11,7 @@ describe JourneyWalker::DataSources::Custom do
                                                  'SomeThing::SomeWhere::OSAdviser',
                                                  %w(os install_method))
   end
-  let(:data_source_call) { JourneyWalker::Config::DataSourceCallConfig.new('OS Advisor', 'os') }
+  let(:data_source_call) { JourneyWalker::Config::DataSourceCallConfig.new('OS Advisor', 'os', []) }
   let(:data_switch) { JourneyWalker::Config::DataSwitchConfig.new('linux', data_source_call) }
 
   context 'data source class not found' do
@@ -42,6 +43,19 @@ describe JourneyWalker::DataSources::Custom do
 
     it 'should return true for matching switch' do
       expect(described_class.new.evaluate(data_source, data_source_call)).to eq('linux')
+    end
+  end
+
+  context 'gets data source response dependant on parameters' do
+    before do
+      make_data_source_methods('linux', 'apt')
+    end
+    let(:parameters) { [JourneyWalker::Config::DataSourceCallParameterConfig.new('capitalise', true)] }
+    let(:data_source_call) { JourneyWalker::Config::DataSourceCallConfig.new('OS Advisor', 'os', parameters) }
+    let(:data_switch) { JourneyWalker::Config::DataSwitchConfig.new('linux', data_source_call) }
+
+    it 'should return true for matching switch' do
+      expect(described_class.new.evaluate(data_source, data_source_call)).to eq('Linux')
     end
   end
 end

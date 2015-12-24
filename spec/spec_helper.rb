@@ -7,7 +7,7 @@ end
 module ClassBuilder
   def make_data_source_methods(os, install_method)
     make_data_source_class
-    SomeThing::SomeWhere::OSAdviser.send(:define_method, 'os') { os }
+    SomeThing::SomeWhere::OSAdviser.send(:define_method, 'os') { |capitalise = false| capitalise ? os.capitalize : os }
     SomeThing::SomeWhere::OSAdviser.send(:define_method, 'install_method') { install_method }
   end
 

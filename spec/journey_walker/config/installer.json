@@ -48,9 +48,15 @@
         {
           "source_call": {
             "source": "OS Adviser",
-            "method": "os"
+            "method": "os",
+            "parameters":[
+              {
+                "name":"capitalise",
+                "value": true
+              }
+            ]
           },
-          "value": "linux"
+          "value": "Linux"
         },
         {
           "source_call": {

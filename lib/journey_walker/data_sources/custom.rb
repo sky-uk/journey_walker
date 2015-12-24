@@ -30,13 +30,15 @@ module JourneyWalker
 
       def evaluate(data_source, data_source_call)
         data_source_class = data_source_class(data_source)
-        call_data_source_method(data_source_class, data_source_call.source_method)
+        call_data_source_method(data_source_class,
+                                data_source_call.source_method,
+                                data_source_call.parameters.map(&:value))
       end
 
       private
 
-      def call_data_source_method(data_source_class, method)
-        data_source_class.new.send(method)
+      def call_data_source_method(data_source_class, method, params)
+        data_source_class.new.send(method, *params)
       rescue
         raise(JourneyError, t.error.data_source_method_missing(method))
       end

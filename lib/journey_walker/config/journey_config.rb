@@ -4,6 +4,7 @@ require_relative '../data_sources/custom_config'
 require_relative 'transition_config'
 require_relative 'data_switch_config'
 require_relative 'data_source_call_config'
+require_relative 'data_source_call_parameter_config'
 
 module JourneyWalker
   module Config
@@ -52,7 +53,12 @@ module JourneyWalker
       end
 
       def parse_source_call(source_call)
-        DataSourceCallConfig.new(source_call[:source], source_call[:method])
+        DataSourceCallConfig.new(source_call[:source], source_call[:method], parse_parameters(source_call[:parameters]))
+      end
+
+      def parse_parameters(parameters)
+        return [] if parameters.nil?
+        parameters.map { |param| DataSourceCallParameterConfig.new(param[:name], param[:value]) }
       end
 
       def step(step_name)
