@@ -28,10 +28,27 @@ module JourneyWalker
         config_error(t.data_source_error.missing_class(config[:class_name])) if class_instance(config[:class_name]).nil?
       end
 
-      def evaluate
+      def evaluate(data_source, data_switch)
+        data_source_class = data_source_class(data_source)
+        call_data_source_method(data_source_class, data_switch)
       end
 
       private
+
+      def call_data_source_method(data_source_class, data_switch)
+        method_response = data_source_class.new.send(data_switch.method)
+        return method_response == data_switch.value
+      rescue
+        raise(JourneyError, t.error.data_source_method_missing(data_switch.method))
+      end
+
+      def data_source_class(data_source)
+        data_source.class_name.split('::').inject(Kernel) do |scope, module_or_class|
+          scope.const_get(module_or_class)
+        end
+      rescue
+        raise(JourneyError, t.error.data_source_class_missing(data_source.class_name, data_source.name))
+      end
 
       def class_instance(class_name)
         class_name.split('::').inject(Kernel) do |scope, module_or_class|

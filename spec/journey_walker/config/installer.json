@@ -21,6 +21,7 @@
   ],
   "data_sources": [
     {
+      "type": "custom",
       "name": "OS Adviser",
       "class_name": "SomeThing::SomeWhere::OSAdviser",
       "methods": [

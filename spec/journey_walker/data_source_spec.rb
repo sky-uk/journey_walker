@@ -49,28 +49,4 @@ describe JourneyWalker::Journey do
         .to raise_error(JourneyWalker::JourneyError, /proceed.*intro|intro*.proceed/)
     end
   end
-
-  context 'data source class not found' do
-    before do
-      make_data_source_module
-    end
-
-    it 'should raise an error when the data source class cannot be found' do
-      current_step = journey.start
-      expect { journey.perform_action(current_step, 'proceed') }
-        .to raise_error(JourneyWalker::JourneyError, /cannot find data source class 'SomeThing::SomeWhere::OSAdviser'/i)
-    end
-  end
-
-  context 'data source method not found' do
-    before do
-      make_data_source_class
-    end
-
-    it 'should raise an error when the data source method cannot be found' do
-      current_step = journey.start
-      expect { journey.perform_action(current_step, 'proceed') }
-        .to raise_error(JourneyWalker::JourneyError, /cannot find data source method 'os'/i)
-    end
-  end
 end

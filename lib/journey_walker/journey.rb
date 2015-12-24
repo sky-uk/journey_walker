@@ -1,6 +1,7 @@
 require 'r18n-core'
 require_relative 'config/journey_config'
 require_relative 'journey_error'
+require_relative 'data_sources/custom'
 
 module JourneyWalker
   # This is the class which manages a journeyman journey, loaded from the json representation.
@@ -36,27 +37,10 @@ module JourneyWalker
 
       potential_transition.data_switches.each do |data_switch|
         data_source = @config.data_source(data_switch.source)
-        data_source_class = data_source_class(data_source)
-
-        response = call_data_source_method(data_source_class, data_switch)
-        return false unless response
+        switch_true = JourneyWalker::DataSources::Custom.new.evaluate(data_source, data_switch)
+        return false unless switch_true
       end
       true
-    end
-
-    def call_data_source_method(data_source_class, data_switch)
-      method_response = data_source_class.new.send(data_switch.method)
-      return method_response == data_switch.value
-    rescue
-      raise(JourneyError, t.error.data_source_method_missing(data_switch.method))
-    end
-
-    def data_source_class(data_source)
-      data_source.class_name.split('::').inject(Kernel) do |scope, module_or_class|
-        scope.const_get(module_or_class)
-      end
-    rescue
-      raise(JourneyError, t.error.data_source_class_missing(data_source.class_name, data_source.name))
     end
 
     def validate_actions(action, current_step, transitions)
