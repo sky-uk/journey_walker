@@ -3,6 +3,7 @@ require_relative 'step_config'
 require_relative '../data_sources/custom_config'
 require_relative 'transition_config'
 require_relative 'data_switch_config'
+require_relative 'data_source_call_config'
 
 module JourneyWalker
   module Config
@@ -45,10 +46,13 @@ module JourneyWalker
       def parse_data_switches(data_switches)
         return [] if data_switches.nil?
         data_switches.collect do |data_switch|
-          DataSwitchConfig.new(data_switch[:source],
-                               data_switch[:method],
-                               data_switch[:value])
+          DataSwitchConfig.new(data_switch[:value],
+                               parse_source_call(data_switch[:source_call]))
         end
+      end
+
+      def parse_source_call(source_call)
+        DataSourceCallConfig.new(source_call[:source], source_call[:method])
       end
 
       def step(step_name)

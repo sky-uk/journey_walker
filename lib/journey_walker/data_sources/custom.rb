@@ -28,18 +28,17 @@ module JourneyWalker
         config_error(t.data_source_error.missing_class(config[:class_name])) if class_instance(config[:class_name]).nil?
       end
 
-      def evaluate(data_source, data_switch)
+      def evaluate(data_source, data_source_call)
         data_source_class = data_source_class(data_source)
-        call_data_source_method(data_source_class, data_switch)
+        call_data_source_method(data_source_class, data_source_call.source_method)
       end
 
       private
 
-      def call_data_source_method(data_source_class, data_switch)
-        method_response = data_source_class.new.send(data_switch.method)
-        return method_response == data_switch.value
+      def call_data_source_method(data_source_class, method)
+        data_source_class.new.send(method)
       rescue
-        raise(JourneyError, t.error.data_source_method_missing(data_switch.method))
+        raise(JourneyError, t.error.data_source_method_missing(method))
       end
 
       def data_source_class(data_source)

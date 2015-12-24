@@ -40,11 +40,11 @@ module JourneyWalker
       end
 
       def validate_data_switch(data_switch, transition)
-        config_error(t.error.no_source(transition.to_json)) unless data_switch.key?(:source)
-        config_error(t.error.no_method(transition.to_json)) unless data_switch.key?(:method)
+        config_error(t.error.no_source_call(transition.to_json)) unless data_switch.key?(:source_call)
         config_error(t.error.no_value(transition.to_json)) unless data_switch.key?(:value)
-        config_error(t.error.unknown_source(data_switch[:source].to_json, transition.to_json)) unless
-            data_source_exists(data_switch[:source])
+        config_error(t.error.no_source(transition.to_json)) unless data_switch[:source_call].key?(:source)
+        config_error(t.error.unknown_source(data_switch[:source_call][:source].to_json, transition.to_json)) unless
+            data_source_exists(data_switch[:source_call][:source])
       end
 
       def validate_action(transition)

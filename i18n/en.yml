@@ -1,6 +1,7 @@
 error:
   no_transitions: "No transitions are defined in journey."
   no_initial_transition: "No initial transition defined (transition with only \"to:\" key.)"
+  no_source_call: "no source call is defined for data switch \"%1\""
   no_source: "no source is defined for data switch \"%1\""
   no_method: "no method is defined for data switch \"%1\""
   no_value: "no value is defined for data switch \"%1\""

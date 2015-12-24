@@ -36,9 +36,9 @@ module JourneyWalker
       return true if potential_transition.data_switches.nil?
 
       potential_transition.data_switches.each do |data_switch|
-        data_source = @config.data_source(data_switch.source)
-        switch_true = JourneyWalker::DataSources::Custom.new.evaluate(data_source, data_switch)
-        return false unless switch_true
+        data_source = @config.data_source(data_switch.source_call.source)
+        source_response = JourneyWalker::DataSources::Custom.new.evaluate(data_source, data_switch.source_call)
+        return false unless source_response == data_switch.value
       end
       true
     end

@@ -46,13 +46,17 @@
       "action": "proceed",
       "data_switches": [
         {
-          "source": "OS Adviser",
-          "method": "os",
+          "source_call": {
+            "source": "OS Adviser",
+            "method": "os"
+          },
           "value": "linux"
         },
         {
-          "source": "OS Adviser",
-          "method": "install_method",
+          "source_call": {
+            "source": "OS Adviser",
+            "method": "install_method"
+          },
           "value": "apt"
         }
       ]
@@ -63,13 +67,17 @@
       "action": "proceed",
       "data_switches": [
         {
-          "source": "OS Adviser",
-          "method": "os",
+          "source_call": {
+            "source": "OS Adviser",
+            "method": "os"
+          },
           "value": "linux"
         },
         {
-          "source": "OS Adviser",
-          "method": "install_method",
+          "source_call": {
+            "source": "OS Adviser",
+            "method": "install_method"
+          },
           "value": "rpm"
         }
       ]
@@ -80,8 +88,10 @@
       "action": "proceed",
       "data_switches": [
         {
-          "source": "OS Adviser",
-          "method": "os",
+          "source_call": {
+            "source": "OS Adviser",
+            "method": "os"
+          },
           "value": "windows"
         }
       ]
