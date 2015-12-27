@@ -1,0 +1,60 @@
+{
+    "steps": [
+        {
+            "name": "step1"
+        },
+        {
+            "name": "step2"
+        }
+    ],
+    "data_sources": [
+        {
+            "type": "custom",
+            "name": "Test Source",
+            "class_name": "JourneyWalkerTests",
+            "methods": [
+                "multiply",
+                "fetch_number"
+            ]
+        }
+    ],
+    "transitions": [
+        {
+            "to": "step1",
+            "action": "start"
+        },
+        {
+            "from": "step1",
+            "to": "step2",
+            "action": "proceed",
+            "data_switches": [
+                {
+                    "source_call": {
+                        "source": "Test Source",
+                        "method": "multiply",
+                        "parameters": [
+                            {
+                                "name": "multiple1",
+                                "value": 2
+                            },
+                            {
+                                "name": "multiple2",
+                                "value": {
+                                    "source": "Test Source",
+                                    "method": "fetch_number",
+                                    "parameters": [
+                                        {
+                                            "name": "number",
+                                            "value": 3
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    },
+                    "value": 6
+                }
+            ]
+        }
+    ]
+}

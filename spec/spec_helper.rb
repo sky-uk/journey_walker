@@ -28,6 +28,17 @@ module ClassBuilder
   end
 end
 
+# Should be tidied out of here, just some random methods to call from custom data sources in tests
+class JourneyWalkerTests
+  def multiply(x, y)
+    x * y
+  end
+
+  def fetch_number(number)
+    number
+  end
+end
+
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true

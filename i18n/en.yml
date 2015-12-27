@@ -10,7 +10,7 @@ error:
   invalid_step: "Invalid step name \"%1\""
   missing_to: "no to: defined on transition \"%1\""
   data_source_class_missing: "Cannot find data source class '%1' for data source '%2'"
-  data_source_method_missing: "Cannot find data source method '%1'"
+  data_source_method_missing: "Cannot call (possibly find) data source method '%1'"
   unknown_action: "Could not find action '%1' for step '%2'"
   too_many_actions: "Too many actions for action named '%1' for step '%2'"
 

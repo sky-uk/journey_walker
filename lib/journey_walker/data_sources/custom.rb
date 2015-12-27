@@ -28,11 +28,11 @@ module JourneyWalker
         config_error(t.data_source_error.missing_class(config[:class_name])) if class_instance(config[:class_name]).nil?
       end
 
-      def evaluate(data_source, data_source_call)
+      def evaluate(data_source, method, parameters)
         data_source_class = data_source_class(data_source)
         call_data_source_method(data_source_class,
-                                data_source_call.source_method,
-                                data_source_call.parameters.map(&:value))
+                                method,
+                                parameters.map(&:value))
       end
 
       private

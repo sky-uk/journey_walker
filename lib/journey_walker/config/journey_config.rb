@@ -58,7 +58,12 @@ module JourneyWalker
 
       def parse_parameters(parameters)
         return [] if parameters.nil?
-        parameters.map { |param| DataSourceCallParameterConfig.new(param[:name], param[:value]) }
+        parameters.map { |param| DataSourceCallParameterConfig.new(param[:name], parse_param_value(param[:value])) }
+      end
+
+      def parse_param_value(param_value)
+        return param_value unless param_value.is_a?(Hash) && param_value.key?(:source)
+        parse_source_call(param_value)
       end
 
       def step(step_name)

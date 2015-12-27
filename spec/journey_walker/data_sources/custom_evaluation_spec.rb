@@ -11,8 +11,6 @@ describe JourneyWalker::DataSources::Custom do
                                                  'SomeThing::SomeWhere::OSAdviser',
                                                  %w(os install_method))
   end
-  let(:data_source_call) { JourneyWalker::Config::DataSourceCallConfig.new('OS Advisor', 'os', []) }
-  let(:data_switch) { JourneyWalker::Config::DataSwitchConfig.new('linux', data_source_call) }
 
   context 'data source class not found' do
     before do
@@ -20,8 +18,8 @@ describe JourneyWalker::DataSources::Custom do
     end
 
     it 'should raise an error when the data source class cannot be found' do
-      expect { described_class.new.evaluate(data_source, data_source_call) }
-        .to raise_error(JourneyWalker::JourneyError, /cannot find data source class 'SomeThing::SomeWhere::OSAdviser'/i)
+      expect { described_class.new.evaluate(data_source, 'os', []) }
+        .to raise_error(JourneyWalker::JourneyError, /'SomeThing::SomeWhere::OSAdviser'/i)
     end
   end
 
@@ -31,8 +29,8 @@ describe JourneyWalker::DataSources::Custom do
     end
 
     it 'should raise an error when the data source method cannot be found' do
-      expect { described_class.new.evaluate(data_source, data_source_call) }
-        .to raise_error(JourneyWalker::JourneyError, /cannot find data source method 'os'/i)
+      expect { described_class.new.evaluate(data_source, 'os', []) }
+        .to raise_error(JourneyWalker::JourneyError, /'os'/i)
     end
   end
 
@@ -42,7 +40,7 @@ describe JourneyWalker::DataSources::Custom do
     end
 
     it 'should return true for matching switch' do
-      expect(described_class.new.evaluate(data_source, data_source_call)).to eq('linux')
+      expect(described_class.new.evaluate(data_source, 'os', [])).to eq('linux')
     end
   end
 
@@ -51,11 +49,10 @@ describe JourneyWalker::DataSources::Custom do
       make_data_source_methods('linux', 'apt')
     end
     let(:parameters) { [JourneyWalker::Config::DataSourceCallParameterConfig.new('capitalise', true)] }
-    let(:data_source_call) { JourneyWalker::Config::DataSourceCallConfig.new('OS Advisor', 'os', parameters) }
-    let(:data_switch) { JourneyWalker::Config::DataSwitchConfig.new('linux', data_source_call) }
+    let(:parameters) { [JourneyWalker::Config::DataSourceCallParameterConfig.new('capitalise', true)] }
 
     it 'should return true for matching switch' do
-      expect(described_class.new.evaluate(data_source, data_source_call)).to eq('Linux')
+      expect(described_class.new.evaluate(data_source, 'os', parameters)).to eq('Linux')
     end
   end
 end
