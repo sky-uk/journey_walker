@@ -2,6 +2,7 @@ require 'r18n-core'
 require_relative 'config/journey_config'
 require_relative 'journey_error'
 require_relative 'data_sources/custom'
+require_relative 'data_source_call_evaluator'
 
 module JourneyWalker
   # This is the class which manages a journeyman journey, loaded from the json representation.
@@ -10,6 +11,7 @@ module JourneyWalker
 
     def initialize(config)
       @config = JourneyWalker::Config::JourneyConfig.new(config)
+      @data_source_evaluator = JourneyWalker::DataSourceCallEvaluator.new(@config)
     end
 
     def start
@@ -36,8 +38,7 @@ module JourneyWalker
       return true if potential_transition.data_switches.nil?
 
       potential_transition.data_switches.each do |data_switch|
-        data_source = @config.data_source(data_switch.source_call.source)
-        source_response = JourneyWalker::DataSources::Custom.new.evaluate(data_source, data_switch.source_call)
+        source_response = @data_source_evaluator.evaluate(data_switch.source_call)
         return false unless source_response == data_switch.value
       end
       true
