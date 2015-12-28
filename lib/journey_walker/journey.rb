@@ -31,15 +31,15 @@ module JourneyWalker
     def evaluate_transition(action, current_state, potential_transition)
       potential_transition.from == current_state.name &&
         potential_transition.action == action &&
-        evaluate_data_switches(potential_transition)
+        evaluate_conditions(potential_transition)
     end
 
-    def evaluate_data_switches(potential_transition)
-      return true if potential_transition.data_switches.nil?
+    def evaluate_conditions(potential_transition)
+      return true if potential_transition.conditions.nil?
 
-      potential_transition.data_switches.each do |data_switch|
-        source_response = @data_source_evaluator.evaluate(data_switch.source_call)
-        return false unless source_response == data_switch.value
+      potential_transition.conditions.each do |condition|
+        source_response = @data_source_evaluator.evaluate(condition.source_call)
+        return false unless source_response == condition.value
       end
       true
     end

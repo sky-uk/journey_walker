@@ -1,7 +1,7 @@
 module JourneyWalker
   module DataSources
     # Definition of the data source
-    #   name: A unique identifier for the data source (referred to by the data switch)
+    #   name: A unique identifier for the data source (referred to by the condition)
     #   class_name: The ruby class used to fulfill the data source
     #   methods: the name of the methods to call
     class CustomConfig

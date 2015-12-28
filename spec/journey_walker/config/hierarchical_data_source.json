@@ -27,7 +27,7 @@
             "from": "state1",
             "to": "state2",
             "action": "proceed",
-            "data_switches": [
+            "conditions": [
                 {
                     "source_call": {
                         "source": "Test Source",

@@ -2,7 +2,7 @@ require_relative 'config_validator'
 require_relative 'state_config'
 require_relative '../data_sources/custom_config'
 require_relative 'transition_config'
-require_relative 'data_switch_config'
+require_relative 'condition_config'
 require_relative 'data_source_call_config'
 require_relative 'data_source_call_parameter_config'
 
@@ -50,15 +50,15 @@ module JourneyWalker
           TransitionConfig.new(transition[:from],
                                transition[:to],
                                transition[:action],
-                               parse_data_switches(transition[:data_switches]))
+                               parse_conditions(transition[:conditions]))
         end
       end
 
-      def parse_data_switches(data_switches)
-        return [] if data_switches.nil?
-        data_switches.collect do |data_switch|
-          DataSwitchConfig.new(data_switch[:value],
-                               parse_source_call(data_switch[:source_call]))
+      def parse_conditions(conditions)
+        return [] if conditions.nil?
+        conditions.collect do |condition|
+          ConditionConfig.new(condition[:value],
+                              parse_source_call(condition[:source_call]))
         end
       end
 

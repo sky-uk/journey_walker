@@ -31,22 +31,22 @@ module JourneyWalker
         validate_to(transition)
         validate_from(transition)
         validate_action(transition)
-        validate_data_switches(transition)
+        validate_conditions(transition)
       end
 
-      def validate_data_switches(transition)
-        data_switches = transition[:data_switches]
-        data_switches.each do |data_switch|
-          validate_data_switch(data_switch, transition)
-        end unless data_switches.nil? || !data_switches.is_a?(Array)
+      def validate_conditions(transition)
+        conditions = transition[:conditions]
+        conditions.each do |condition|
+          validate_condition(condition, transition)
+        end unless conditions.nil? || !conditions.is_a?(Array)
       end
 
-      def validate_data_switch(data_switch, transition)
-        config_error(t.error.no_source_call(transition.to_json)) unless data_switch.key?(:source_call)
-        config_error(t.error.no_value(transition.to_json)) unless data_switch.key?(:value)
-        config_error(t.error.no_source(transition.to_json)) unless data_switch[:source_call].key?(:source)
-        config_error(t.error.unknown_source(data_switch[:source_call][:source].to_json, transition.to_json)) unless
-            data_source_exists(data_switch[:source_call][:source])
+      def validate_condition(condition, transition)
+        config_error(t.error.no_source_call(transition.to_json)) unless condition.key?(:source_call)
+        config_error(t.error.no_value(transition.to_json)) unless condition.key?(:value)
+        config_error(t.error.no_source(transition.to_json)) unless condition[:source_call].key?(:source)
+        config_error(t.error.unknown_source(condition[:source_call][:source].to_json, transition.to_json)) unless
+            data_source_exists(condition[:source_call][:source])
       end
 
       def validate_action(transition)

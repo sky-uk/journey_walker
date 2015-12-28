@@ -44,7 +44,7 @@
       "from": "intro",
       "to": "linux apt-get",
       "action": "proceed",
-      "data_switches": [
+      "conditions": [
         {
           "source_call": {
             "source": "OS Adviser",
@@ -71,7 +71,7 @@
       "from": "intro",
       "to": "linux rpm",
       "action": "proceed",
-      "data_switches": [
+      "conditions": [
         {
           "source_call": {
             "source": "OS Adviser",
@@ -92,7 +92,7 @@
       "from": "intro",
       "to": "windows",
       "action": "proceed",
-      "data_switches": [
+      "conditions": [
         {
           "source_call": {
             "source": "OS Adviser",

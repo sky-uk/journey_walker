@@ -4,15 +4,15 @@ module JourneyWalker
     #   from: The state name which this transition begins from
     #   to: The name of the state this transition moves to
     #   action: The name of the action initiating the transition
-    #   data_switches: Rules around when this transition can happen
+    #   conditions: Rules around when this transition can happen
     class TransitionConfig
-      attr_reader :from, :to, :action, :data_switches
+      attr_reader :from, :to, :action, :conditions
 
-      def initialize(from, to, action, data_switches)
+      def initialize(from, to, action, conditions)
         @from = from
         @to = to
         @action = action
-        @data_switches = data_switches
+        @conditions = conditions
       end
     end
   end
