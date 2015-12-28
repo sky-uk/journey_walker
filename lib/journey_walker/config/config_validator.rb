@@ -56,16 +56,16 @@ module JourneyWalker
       def validate_to(transition)
         config_error(t.error.missing_to(transition.to_json)) unless transition.key?(:to) ||
                                                                     transition[:action] == 'start'
-        config_error(t.error.invalid_step(transition[:to])) if transition.key?(:to) && !step_exists(transition[:to])
+        config_error(t.error.invalid_state(transition[:to])) if transition.key?(:to) && !state_exists(transition[:to])
       end
 
       def validate_from(transition)
-        config_error(t.error.invalid_step(transition[:from])) if
-            transition.key?(:from) && !step_exists(transition[:from])
+        config_error(t.error.invalid_state(transition[:from])) if
+            transition.key?(:from) && !state_exists(transition[:from])
       end
 
-      def step_exists(step_name)
-        @config[:steps].any? { |step| step[:name] == step_name }
+      def state_exists(state_name)
+        @config[:states].any? { |state| state[:name] == state_name }
       end
 
       def data_source_exists(source_name)

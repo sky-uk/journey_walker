@@ -6,9 +6,9 @@ require 'json'
 #
 # The config loaded here is of the form
 #
-# step1 --> step2
+# state1 --> state2
 #
-# The single transition between step one and two is based on a call to the multiply method of a JourneyWalkerTests
+# The single transition between state one and two is based on a call to the multiply method of a JourneyWalkerTests
 # class instance returning six.  The two parameters to the call are a fixed value: "2", and a call to the fetch_number
 # method of the JourneyWalkerTests class.  In essence
 #
@@ -20,9 +20,9 @@ describe JourneyWalker::Journey do
   end
   let(:journey) { described_class.new(config) }
 
-  it 'should return step2 based on multiply and fetch number methods' do
-    current_step = journey.start
-    current_step = journey.perform_action(current_step, 'proceed')
-    expect(current_step.name).to eq('step2')
+  it 'should return state2 based on multiply and fetch number methods' do
+    current_state = journey.start
+    current_state = journey.perform_action(current_state, 'proceed')
+    expect(current_state.name).to eq('state2')
   end
 end

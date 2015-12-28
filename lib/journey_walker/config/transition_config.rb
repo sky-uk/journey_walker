@@ -1,8 +1,8 @@
 module JourneyWalker
   module Config
     # Definition of a transition in a journey
-    #   from: The step name which this transition begins from
-    #   to: The name of the step this transition moves to
+    #   from: The state name which this transition begins from
+    #   to: The name of the state this transition moves to
     #   action: The name of the action initiating the transition
     #   data_switches: Rules around when this transition can happen
     class TransitionConfig

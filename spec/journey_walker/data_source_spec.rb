@@ -23,29 +23,29 @@ describe JourneyWalker::Journey do
 
     it 'should return windows page when os adviser data source returns windows' do
       make_data_source_methods('windows', '')
-      current_step = journey.start
-      expect(current_step.name).to eq('intro')
-      current_step = journey.perform_action(current_step, 'proceed')
-      expect(current_step.name).to eq('windows')
-      current_step = journey.perform_action(current_step, 'finish')
-      expect(current_step.name).to eq('completed')
+      current_state = journey.start
+      expect(current_state.name).to eq('intro')
+      current_state = journey.perform_action(current_state, 'proceed')
+      expect(current_state.name).to eq('windows')
+      current_state = journey.perform_action(current_state, 'finish')
+      expect(current_state.name).to eq('completed')
     end
 
     it 'should return linux apt-get page when os adviser data source returns linux and apt' do
       make_data_source_methods('linux', 'apt')
-      current_step = journey.start
-      expect(current_step.name).to eq('intro')
-      current_step = journey.perform_action(current_step, 'proceed')
-      expect(current_step.name).to eq('linux apt-get')
-      current_step = journey.perform_action(current_step, 'finish')
-      expect(current_step.name).to eq('completed')
+      current_state = journey.start
+      expect(current_state.name).to eq('intro')
+      current_state = journey.perform_action(current_state, 'proceed')
+      expect(current_state.name).to eq('linux apt-get')
+      current_state = journey.perform_action(current_state, 'finish')
+      expect(current_state.name).to eq('completed')
     end
 
     it 'should throw an error when no matching transition is found' do
       make_data_source_methods('linux', 'wget')
-      current_step = journey.start
-      expect(current_step.name).to eq('intro')
-      expect { journey.perform_action(current_step, 'proceed') }
+      current_state = journey.start
+      expect(current_state.name).to eq('intro')
+      expect { journey.perform_action(current_state, 'proceed') }
         .to raise_error(JourneyWalker::JourneyError, /proceed.*intro|intro*.proceed/)
     end
   end

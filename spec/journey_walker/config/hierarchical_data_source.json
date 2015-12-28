@@ -1,10 +1,10 @@
 {
-    "steps": [
+    "states": [
         {
-            "name": "step1"
+            "name": "state1"
         },
         {
-            "name": "step2"
+            "name": "state2"
         }
     ],
     "data_sources": [
@@ -20,12 +20,12 @@
     ],
     "transitions": [
         {
-            "to": "step1",
+            "to": "state1",
             "action": "start"
         },
         {
-            "from": "step1",
-            "to": "step2",
+            "from": "state1",
+            "to": "state2",
             "action": "proceed",
             "data_switches": [
                 {

@@ -1,5 +1,5 @@
 require_relative 'config_validator'
-require_relative 'step_config'
+require_relative 'state_config'
 require_relative '../data_sources/custom_config'
 require_relative 'transition_config'
 require_relative 'data_switch_config'
@@ -17,8 +17,8 @@ module JourneyWalker
         parse(config)
       end
 
-      def step(step_name)
-        @steps.find { |step| step.name == step_name }
+      def state(state_name)
+        @states.find { |state| state.name == state_name }
       end
 
       def data_source(source_name)
@@ -28,13 +28,13 @@ module JourneyWalker
       private
 
       def parse(config)
-        @steps = parse_steps(config[:steps])
+        @states = parse_states(config[:states])
         @data_sources = parse_data_sources(config[:data_sources]) unless config[:data_sources].nil?
         @transitions = parse_transitions(config[:transitions])
       end
 
-      def parse_steps(steps_hash)
-        steps_hash.collect { |step| StepConfig.new(step[:name]) }
+      def parse_states(states_hash)
+        states_hash.collect { |state| StateConfig.new(state[:name]) }
       end
 
       def parse_data_sources(data_sources_hash)

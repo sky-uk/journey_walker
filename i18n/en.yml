@@ -7,12 +7,12 @@ error:
   no_value: "no value is defined for data switch \"%1\""
   unknown_source: "data switch has unknown data source %1 in \"%2\""
   no_action: "no action defined on transition \"%1\""
-  invalid_step: "Invalid step name \"%1\""
+  invalid_state: "Invalid state name \"%1\""
   missing_to: "no to: defined on transition \"%1\""
   data_source_class_missing: "Cannot find data source class '%1' for data source '%2'"
   data_source_method_missing: "Cannot call (possibly find) data source method '%1'"
-  unknown_action: "Could not find action '%1' for step '%2'"
-  too_many_actions: "Too many actions for action named '%1' for step '%2'"
+  unknown_action: "Could not find action '%1' for state '%2'"
+  too_many_actions: "Too many actions for action named '%1' for state '%2'"
 
 data_source_error:
   wrong_type: "Should not be validating %1 in %2 class"

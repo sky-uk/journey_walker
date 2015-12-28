@@ -3,36 +3,36 @@ require_relative '../../lib/journey_walker/journey_error'
 require 'json'
 
 #
-# The basic config loaded here is of the form step1->step2->step1->step2 etc.
+# The basic config loaded here is of the form state1->state2->state1->state2 etc.
 #
 describe JourneyWalker::Journey do
   let(:config) { JSON.parse(File.read('spec/journey_walker/config/basic_config.json'), symbolize_names: true) }
   let(:journey) { described_class.new(config) }
 
-  it 'should return the initial step on start' do
-    initial_step = journey.start
-    expect(initial_step.name).to eq('step1')
+  it 'should return the initial state on start' do
+    initial_state = journey.start
+    expect(initial_state.name).to eq('state1')
   end
 
-  it 'should return next step on action' do
-    current_step = journey.start
-    current_step = journey.perform_action(current_step, 'proceed')
-    expect(current_step.name).to eq('step2')
-    current_step = journey.perform_action(current_step, 'restart')
-    expect(current_step.name).to eq('step1')
-    current_step = journey.perform_action(current_step, 'check')
-    expect(current_step.name).to eq('step3')
+  it 'should return next state on action' do
+    current_state = journey.start
+    current_state = journey.perform_action(current_state, 'proceed')
+    expect(current_state.name).to eq('state2')
+    current_state = journey.perform_action(current_state, 'restart')
+    expect(current_state.name).to eq('state1')
+    current_state = journey.perform_action(current_state, 'check')
+    expect(current_state.name).to eq('state3')
   end
 
   it 'should throw an exception for an unknown action' do
-    current_step = journey.start
-    expect { journey.perform_action(current_step, 'unknown_action') }
-      .to raise_error(JourneyWalker::JourneyError, /(unknown_action.*step1|step1.*unknown_action)/i)
+    current_state = journey.start
+    expect { journey.perform_action(current_state, 'unknown_action') }
+      .to raise_error(JourneyWalker::JourneyError, /(unknown_action.*state1|state1.*unknown_action)/i)
   end
 
   it 'should throw an exception when multiple actions are valid' do
-    current_step = journey.start
-    expect { journey.perform_action(current_step, 'secondary_proceed') }
+    current_state = journey.start
+    expect { journey.perform_action(current_state, 'secondary_proceed') }
       .to raise_error(JourneyWalker::JourneyError, /(secondary_proceed.*too many|too many.*secondary_proceed)/i)
   end
 end

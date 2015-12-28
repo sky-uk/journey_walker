@@ -15,21 +15,21 @@ module JourneyWalker
     end
 
     def start
-      initial_step
+      initial_state
     end
 
-    def perform_action(current_step, action)
+    def perform_action(current_state, action)
       transitions = @config.transitions.find_all do |potential_transition|
-        evaluate_transition(action, current_step, potential_transition)
+        evaluate_transition(action, current_state, potential_transition)
       end
-      validate_actions(action, current_step, transitions)
-      @config.step(transitions[0].to)
+      validate_actions(action, current_state, transitions)
+      @config.state(transitions[0].to)
     end
 
     private
 
-    def evaluate_transition(action, current_step, potential_transition)
-      potential_transition.from == current_step.name &&
+    def evaluate_transition(action, current_state, potential_transition)
+      potential_transition.from == current_state.name &&
         potential_transition.action == action &&
         evaluate_data_switches(potential_transition)
     end
@@ -44,13 +44,13 @@ module JourneyWalker
       true
     end
 
-    def validate_actions(action, current_step, transitions)
-      fail JourneyError, t.error.unknown_action(action, current_step.name) if transitions.empty?
-      fail JourneyError, t.error.too_many_actions(action, current_step.name) if transitions.size > 1
+    def validate_actions(action, current_state, transitions)
+      fail JourneyError, t.error.unknown_action(action, current_state.name) if transitions.empty?
+      fail JourneyError, t.error.too_many_actions(action, current_state.name) if transitions.size > 1
     end
 
-    def initial_step
-      @config.step(@config.transitions.find { |transition| transition.from.nil? }.to)
+    def initial_state
+      @config.state(@config.transitions.find { |transition| transition.from.nil? }.to)
     end
   end
 end
