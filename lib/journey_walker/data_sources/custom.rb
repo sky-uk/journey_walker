@@ -4,7 +4,7 @@ module JourneyWalker
   module DataSources
     # This is the custom data source which allows you to create a new instance of any ruby class and call any methods
     # from that class, in each case passing parameters as necessary.
-    # And example would be the OS Advisor data source from the tests which has the following config
+    # An example would be the OS Advisor data source from the tests which has the following config
     #
     # {
     #   "type": "custom",
@@ -16,10 +16,8 @@ module JourneyWalker
     #   ]
     # }
     #
-    # This does not expect any parameters, mor complex examples are available in the tests
+    # This example does not expect any parameters, more complex examples are available in the tests
     #
-    #
-    # TODO: should be documented better
     class Custom
       include R18n::Helpers
 

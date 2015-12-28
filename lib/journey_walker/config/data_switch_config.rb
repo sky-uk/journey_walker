@@ -1,9 +1,8 @@
 module JourneyWalker
   module Config
     # Data switch definition
-    #   source: The name of the data source
-    #   method: The method to call on the data source
     #   value: The value which should match the response from the data source method to count as true
+    #   source_call: The definition of the call to make
     class DataSwitchConfig
       attr_reader :value, :source_call
 

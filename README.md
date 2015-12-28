@@ -20,7 +20,7 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+See journey_spec.rb for a simple example, see the wiki for more in-depth documentation.
 
 ## Development
 
@@ -28,7 +28,7 @@ After checking out the repo, run `rake spec` to run the tests.
 
 ## Contributing
 
-TBD
+Pull requests happily received
 
 ## License
 

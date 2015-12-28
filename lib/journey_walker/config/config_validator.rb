@@ -12,6 +12,8 @@ module JourneyWalker
         validate_transitions(config[:transitions])
       end
 
+      private
+
       def validate_transitions(transitions_config)
         validate_transitions_root(transitions_config)
 

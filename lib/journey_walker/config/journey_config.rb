@@ -17,6 +17,16 @@ module JourneyWalker
         parse(config)
       end
 
+      def step(step_name)
+        @steps.find { |step| step.name == step_name }
+      end
+
+      def data_source(source_name)
+        @data_sources.find { |source| source.name == source_name }
+      end
+
+      private
+
       def parse(config)
         @steps = parse_steps(config[:steps])
         @data_sources = parse_data_sources(config[:data_sources]) unless config[:data_sources].nil?
@@ -64,14 +74,6 @@ module JourneyWalker
       def parse_param_value(param_value)
         return param_value unless param_value.is_a?(Hash) && param_value.key?(:source)
         parse_source_call(param_value)
-      end
-
-      def step(step_name)
-        @steps.find { |step| step.name == step_name }
-      end
-
-      def data_source(source_name)
-        @data_sources.find { |source| source.name == source_name }
       end
     end
   end
