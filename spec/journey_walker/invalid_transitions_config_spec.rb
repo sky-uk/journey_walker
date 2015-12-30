@@ -37,9 +37,9 @@ describe JourneyWalker::Journey do
   end
 
   it 'should not accept transition with no action' do
-    invalid_config[:transitions].first.reject! { |key, _value| key == :action }
+    invalid_config[:transitions][2].reject! { |key, _value| key == :action }
     expect { described_class.new(invalid_config) }.to raise_error(JourneyWalker::Config::InvalidConfigError,
-                                                                  /no action defined on transition "{"to":"state1"}"/i)
+                                                                  /no action defined on transition/i)
   end
 
   it 'should not accept a transition with invalid to: state' do

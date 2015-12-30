@@ -24,7 +24,9 @@ module JourneyWalker
 
       def validate_transitions_root(transitions_config)
         config_error(t.error.no_transitions) if transitions_config.nil? || transitions_config.empty?
-        config_error(t.error.no_initial_transition) if transitions_config.none? { |value| !value.key?(:from) }
+        config_error(t.error.no_initial_transition) if transitions_config.none? do |value|
+          !value.key?(:from) && value[:action] == 'start'
+        end
       end
 
       def validate_transition(transition)
