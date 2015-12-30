@@ -16,23 +16,23 @@ describe JourneyWalker::Journey do
 
   it 'should return next state on action' do
     current_state = journey.start
-    current_state = journey.perform_action(current_state, 'proceed')
+    current_state = journey.perform_action(current_state.name, 'proceed')
     expect(current_state.name).to eq('state2')
-    current_state = journey.perform_action(current_state, 'restart')
+    current_state = journey.perform_action(current_state.name, 'restart')
     expect(current_state.name).to eq('state1')
-    current_state = journey.perform_action(current_state, 'check')
+    current_state = journey.perform_action(current_state.name, 'check')
     expect(current_state.name).to eq('state3')
   end
 
   it 'should throw an exception for an unknown action' do
     current_state = journey.start
-    expect { journey.perform_action(current_state, 'unknown_action') }
+    expect { journey.perform_action(current_state.name, 'unknown_action') }
       .to raise_error(JourneyWalker::JourneyError, /(unknown_action.*state1|state1.*unknown_action)/i)
   end
 
   it 'should throw an exception when multiple actions are valid' do
     current_state = journey.start
-    expect { journey.perform_action(current_state, 'secondary_proceed') }
+    expect { journey.perform_action(current_state.name, 'secondary_proceed') }
       .to raise_error(JourneyWalker::JourneyError, /(secondary_proceed.*too many|too many.*secondary_proceed)/i)
   end
 end

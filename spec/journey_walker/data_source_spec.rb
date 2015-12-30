@@ -25,9 +25,9 @@ describe JourneyWalker::Journey do
       make_data_source_methods('windows', '')
       current_state = journey.start
       expect(current_state.name).to eq('intro')
-      current_state = journey.perform_action(current_state, 'proceed')
+      current_state = journey.perform_action(current_state.name, 'proceed')
       expect(current_state.name).to eq('windows')
-      current_state = journey.perform_action(current_state, 'finish')
+      current_state = journey.perform_action(current_state.name, 'finish')
       expect(current_state.name).to eq('completed')
     end
 
@@ -35,9 +35,9 @@ describe JourneyWalker::Journey do
       make_data_source_methods('linux', 'apt')
       current_state = journey.start
       expect(current_state.name).to eq('intro')
-      current_state = journey.perform_action(current_state, 'proceed')
+      current_state = journey.perform_action(current_state.name, 'proceed')
       expect(current_state.name).to eq('linux apt-get')
-      current_state = journey.perform_action(current_state, 'finish')
+      current_state = journey.perform_action(current_state.name, 'finish')
       expect(current_state.name).to eq('completed')
     end
 
@@ -45,7 +45,7 @@ describe JourneyWalker::Journey do
       make_data_source_methods('linux', 'wget')
       current_state = journey.start
       expect(current_state.name).to eq('intro')
-      expect { journey.perform_action(current_state, 'proceed') }
+      expect { journey.perform_action(current_state.name, 'proceed') }
         .to raise_error(JourneyWalker::JourneyError, /proceed.*intro|intro*.proceed/)
     end
   end

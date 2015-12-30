@@ -18,7 +18,8 @@ module JourneyWalker
       initial_state
     end
 
-    def perform_action(current_state, action)
+    def perform_action(current_state_name, action)
+      current_state = @config.state(current_state_name)
       transitions = @config.transitions.find_all do |potential_transition|
         evaluate_transition(action, current_state, potential_transition)
       end
