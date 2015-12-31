@@ -21,15 +21,27 @@ module JourneyWalker
     def perform_action(current_state_name, action)
       current_state = @config.state(current_state_name)
       transitions = @config.transitions.find_all do |potential_transition|
-        evaluate_transition(action, current_state, potential_transition)
+        evaluate_transition_for_action(action, current_state, potential_transition)
       end
       validate_actions(action, current_state, transitions)
       @config.state(transitions[0].to)
     end
 
+    def allowed_actions(current_state_name)
+      current_state = @config.state(current_state_name)
+      @config.transitions.find_all do |potential_transition|
+        evaluate_transition(current_state, potential_transition)
+      end.map(&:action).uniq
+    end
+
     private
 
-    def evaluate_transition(action, current_state, potential_transition)
+    def evaluate_transition(current_state, potential_transition)
+      potential_transition.from == current_state.name &&
+        evaluate_conditions(potential_transition)
+    end
+
+    def evaluate_transition_for_action(action, current_state, potential_transition)
       potential_transition.from == current_state.name &&
         potential_transition.action == action &&
         evaluate_conditions(potential_transition)

@@ -48,5 +48,13 @@ describe JourneyWalker::Journey do
       expect { journey.perform_action(current_state.name, 'proceed') }
         .to raise_error(JourneyWalker::JourneyError, /proceed.*intro|intro*.proceed/)
     end
+
+    it 'should only return allowed actions' do
+      make_data_source_methods('windows', '')
+      current_state = journey.start
+      allowed_actions = journey.allowed_actions(current_state.name)
+      expect(allowed_actions.size).to eq(2)
+      expect(allowed_actions).to include('proceed', 'cancel')
+    end
   end
 end

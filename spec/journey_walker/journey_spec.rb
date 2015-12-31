@@ -30,9 +30,16 @@ describe JourneyWalker::Journey do
       .to raise_error(JourneyWalker::JourneyError, /(unknown_action.*state1|state1.*unknown_action)/i)
   end
 
-  it 'should throw an exception when multiple actions are valid' do
+  it 'should throw an exception when multiple actions with the same name are valid' do
     current_state = journey.start
     expect { journey.perform_action(current_state.name, 'secondary_proceed') }
       .to raise_error(JourneyWalker::JourneyError, /(secondary_proceed.*too many|too many.*secondary_proceed)/i)
+  end
+
+  it 'should return allowed actions for current step' do
+    current_state = journey.start
+    transitions = journey.allowed_actions(current_state.name)
+    expect(transitions.length).to eq(3)
+    expect(transitions).to include('check', 'proceed', 'secondary_proceed')
   end
 end
