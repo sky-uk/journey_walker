@@ -6,14 +6,12 @@ describe JourneyWalker::Journey do
 
   it 'should not accept condition without source' do
     invalid_config[:transitions][2][:conditions][0].reject! { |key, _value| key == :source_call }
-    expect { described_class.new(invalid_config) }.to raise_error(JourneyWalker::Config::InvalidConfigError,
-                                                                  /no source call is defined for condition/i)
+    expect { described_class.new(invalid_config) }.to raise_error(JourneyWalker::Config::InvalidConfigError)
   end
 
   it 'should not accept condition without value' do
     invalid_config[:transitions][2][:conditions][0].reject! { |key, _value| key == :value }
-    expect { described_class.new(invalid_config) }.to raise_error(JourneyWalker::Config::InvalidConfigError,
-                                                                  /no value is defined for condition/i)
+    expect { described_class.new(invalid_config) }.to raise_error(JourneyWalker::Config::InvalidConfigError)
   end
 
   it 'should not accept condition with unknown data source' do

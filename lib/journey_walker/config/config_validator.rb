@@ -1,4 +1,5 @@
 require 'r18n-core'
+require 'json-schema'
 require_relative 'invalid_config_error'
 
 module JourneyWalker
@@ -9,30 +10,23 @@ module JourneyWalker
 
       def validate(config)
         @config = config
+        config_schema = JSON.parse(File.read(File.join(File.dirname(File.expand_path(__FILE__)), 'config_schema.json')))
+        validation_errors = JSON::Validator.fully_validate(config_schema, @config, validate_schema: true)
+        config_error("\n" + validation_errors.join("\n")) unless validation_errors.empty?
         validate_transitions(config[:transitions])
       end
 
       private
 
       def validate_transitions(transitions_config)
-        validate_transitions_root(transitions_config)
-
         transitions_config.each do |transition|
           validate_transition(transition)
-        end
-      end
-
-      def validate_transitions_root(transitions_config)
-        config_error(t.error.no_transitions) if transitions_config.nil? || transitions_config.empty?
-        config_error(t.error.no_initial_transition) if transitions_config.none? do |value|
-          !value.key?(:from) && value[:action] == 'start'
         end
       end
 
       def validate_transition(transition)
         validate_to(transition)
         validate_from(transition)
-        validate_action(transition)
         validate_conditions(transition)
       end
 
@@ -40,24 +34,15 @@ module JourneyWalker
         conditions = transition[:conditions]
         conditions.each do |condition|
           validate_condition(condition, transition)
-        end unless conditions.nil? || !conditions.is_a?(Array)
+        end unless conditions.nil?
       end
 
       def validate_condition(condition, transition)
-        config_error(t.error.no_source_call(transition.to_json)) unless condition.key?(:source_call)
-        config_error(t.error.no_value(transition.to_json)) unless condition.key?(:value)
-        config_error(t.error.no_source(transition.to_json)) unless condition[:source_call].key?(:source)
         config_error(t.error.unknown_source(condition[:source_call][:source].to_json, transition.to_json)) unless
             data_source_exists(condition[:source_call][:source])
       end
 
-      def validate_action(transition)
-        config_error(t.error.no_action(transition.to_json)) unless transition.key?(:action)
-      end
-
       def validate_to(transition)
-        config_error(t.error.missing_to(transition.to_json)) unless transition.key?(:to) ||
-                                                                    transition[:action] == 'start'
         config_error(t.error.invalid_state(transition[:to])) if transition.key?(:to) && !state_exists(transition[:to])
       end
 
