@@ -7,5 +7,9 @@ module JourneyWalker
         klass < JourneyWalker::DataSource && klass.data_source_type == data_source_type
       end
     end
+
+    def self.config_error(message)
+      fail(JourneyWalker::Config::InvalidConfigError, message)
+    end
   end
 end

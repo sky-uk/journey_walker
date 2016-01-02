@@ -23,10 +23,6 @@ module JourneyWalker
         'custom'
       end
 
-      def self.translate(*params)
-        R18n.get.t(*params)
-      end
-
       def self.validate(config)
         config_error(translate.data_source_error.wrong_type(config[:type], self.class)) if config[:type] != 'custom'
         class_name_param = config[:parameters].find { |parameter| parameter[:name] == 'class_name' }
@@ -43,6 +39,10 @@ module JourneyWalker
       end
 
       private
+
+      def self.translate(*params)
+        R18n.get.t(*params)
+      end
 
       def call_data_source_method(data_source_class, method, params)
         data_source_class.new.send(method, *params)
@@ -65,10 +65,6 @@ module JourneyWalker
         end
       rescue
         nil
-      end
-
-      def self.config_error(message)
-        fail(JourneyWalker::Config::InvalidConfigError, message)
       end
     end
   end
