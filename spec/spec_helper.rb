@@ -3,6 +3,8 @@ SimpleCov.start do
   SimpleCov.minimum_coverage 100
 end
 
+require_relative '../lib/journey_walker'
+
 # Builds SomeThing::SomeWhere::OSAdviser with some methods.  May not be the best way to do this.
 module ClassBuilder
   def make_data_source_methods(os, install_method)

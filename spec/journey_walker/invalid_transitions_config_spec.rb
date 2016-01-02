@@ -1,5 +1,4 @@
 require 'json'
-require_relative '../../lib/journey_walker'
 
 describe JourneyWalker::Journey do
   let(:invalid_config) { JSON.parse(File.read('spec/journey_walker/config/basic_config.json'), symbolize_names: true) }

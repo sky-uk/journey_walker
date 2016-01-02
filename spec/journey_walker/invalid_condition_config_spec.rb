@@ -1,7 +1,11 @@
+require_relative '../spec_helper'
 require 'json'
-require_relative '../../lib/journey_walker'
 
 describe JourneyWalker::Journey do
+  before do
+    make_data_source_methods('linux', 'apt')
+  end
+
   let(:invalid_config) { JSON.parse(File.read('spec/journey_walker/config/installer.json'), symbolize_names: true) }
 
   it 'should not accept condition without source' do

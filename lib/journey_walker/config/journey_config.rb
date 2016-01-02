@@ -1,6 +1,6 @@
 require_relative 'config_validator'
 require_relative 'state_config'
-require_relative '../data_sources/custom_config'
+require_relative 'data_source_config'
 require_relative 'transition_config'
 require_relative 'condition_config'
 require_relative 'data_source_call_config'
@@ -39,9 +39,9 @@ module JourneyWalker
 
       def parse_data_sources(data_sources_hash)
         data_sources_hash.collect do |source|
-          JourneyWalker::DataSources::CustomConfig.new(source[:name],
-                                                       source[:class_name],
-                                                       source[:methods])
+          JourneyWalker::Config::DataSourceConfig.new(source[:type],
+                                                      source[:name],
+                                                      parse_parameters(source[:parameters]))
         end
       end
 

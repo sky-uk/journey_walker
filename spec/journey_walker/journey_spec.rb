@@ -1,4 +1,3 @@
-require_relative '../../lib/journey_walker/journey'
 require_relative '../../lib/journey_walker/journey_error'
 require 'json'
 

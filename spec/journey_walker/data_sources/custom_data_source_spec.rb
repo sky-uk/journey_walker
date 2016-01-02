@@ -1,15 +1,17 @@
 require_relative '../../spec_helper'
-require_relative '../../../lib/journey_walker/data_sources/custom_config'
-require_relative '../../../lib/journey_walker'
+require_relative '../../../lib/journey_walker/config/data_source_config'
+require_relative '../../../lib/journey_walker/config/parameter_config'
 require_relative '../../../lib/journey_walker/data_sources/custom'
 require_relative '../../../lib/journey_walker/journey_error'
 require_relative '../../../lib/journey_walker/config/parameter_config'
 
 describe JourneyWalker::DataSources::Custom do
+  let(:config_error) { JourneyWalker::Config::InvalidConfigError }
   let(:data_source) do
-    JourneyWalker::DataSources::CustomConfig.new('OS Advisor',
-                                                 'SomeThing::SomeWhere::OSAdviser',
-                                                 %w(os install_method))
+    class_param = JourneyWalker::Config::ParameterConfig.new('class_name', 'SomeThing::SomeWhere::OSAdviser')
+    JourneyWalker::Config::DataSourceConfig.new('custom',
+                                                'OS Advisor',
+                                                [class_param])
   end
 
   context 'data source class not found' do
@@ -53,6 +55,22 @@ describe JourneyWalker::DataSources::Custom do
 
     it 'should return true for matching switch' do
       expect(described_class.new.evaluate(data_source, 'os', parameters)).to eq('Linux')
+    end
+  end
+
+  it 'should have type of custom' do
+    expect { described_class.validate(type: 'non-custom') }.to raise_error(config_error)
+  end
+
+  context 'data source class not found' do
+    before do
+      make_data_source_module
+    end
+
+    it 'should raise an error when the data source class cannot be found' do
+      invalid_params = [{ name: 'class_name', value: 'SomeThing::SomeWhere::OSAdviser' }]
+      expect { described_class.validate(type: 'custom', parameters: invalid_params) }
+        .to raise_error(config_error, /cannot find data source class 'SomeThing::SomeWhere::OSAdviser'/i)
     end
   end
 end

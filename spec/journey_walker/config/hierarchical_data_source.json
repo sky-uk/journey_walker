@@ -1,60 +1,61 @@
 {
-    "states": [
+  "states": [
+    {
+      "name": "state1"
+    },
+    {
+      "name": "state2"
+    }
+  ],
+  "data_sources": [
+    {
+      "type": "custom",
+      "name": "Test Source",
+      "parameters": [
         {
-            "name": "state1"
-        },
-        {
-            "name": "state2"
+          "name": "class_name",
+          "value": "JourneyWalkerTests"
         }
-    ],
-    "data_sources": [
+      ]
+    }
+  ],
+  "transitions": [
+    {
+      "to": "state1",
+      "action": "start"
+    },
+    {
+      "from": "state1",
+      "to": "state2",
+      "action": "proceed",
+      "conditions": [
         {
-            "type": "custom",
-            "name": "Test Source",
-            "class_name": "JourneyWalkerTests",
-            "methods": [
-                "multiply",
-                "fetch_number"
-            ]
-        }
-    ],
-    "transitions": [
-        {
-            "to": "state1",
-            "action": "start"
-        },
-        {
-            "from": "state1",
-            "to": "state2",
-            "action": "proceed",
-            "conditions": [
-                {
-                    "source_call": {
-                        "source": "Test Source",
-                        "method": "multiply",
-                        "parameters": [
-                            {
-                                "name": "multiple1",
-                                "value": 2
-                            },
-                            {
-                                "name": "multiple2",
-                                "value": {
-                                    "source": "Test Source",
-                                    "method": "fetch_number",
-                                    "parameters": [
-                                        {
-                                            "name": "number",
-                                            "value": 3
-                                        }
-                                    ]
-                                }
-                            }
-                        ]
-                    },
-                    "value": 6
+          "source_call": {
+            "source": "Test Source",
+            "method": "multiply",
+            "parameters": [
+              {
+                "name": "multiple1",
+                "value": 2
+              },
+              {
+                "name": "multiple2",
+                "value": {
+                  "source": "Test Source",
+                  "method": "fetch_number",
+                  "parameters": [
+                    {
+                      "name": "number",
+                      "value": 3
+                    }
+                  ]
                 }
+              }
             ]
+          },
+          "value": 6
         }
-    ]
+      ]
+    }
+  ]
 }

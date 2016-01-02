@@ -1,6 +1,7 @@
 require 'r18n-core'
 require 'json-schema'
 require_relative 'invalid_config_error'
+require_relative '../data_source'
 
 module JourneyWalker
   module Config
@@ -13,10 +14,23 @@ module JourneyWalker
         config_schema = JSON.parse(File.read(File.join(File.dirname(File.expand_path(__FILE__)), 'config_schema.json')))
         validation_errors = JSON::Validator.fully_validate(config_schema, @config, validate_schema: true)
         config_error("\n" + validation_errors.join("\n")) unless validation_errors.empty?
+        validate_data_sources(config[:data_sources]) unless config[:data_sources].nil?
         validate_transitions(config[:transitions])
       end
 
       private
+
+      def validate_data_sources(data_sources_config)
+        data_sources_config.each do |data_source_config|
+          validate_data_source(data_source_config)
+        end
+      end
+
+      def validate_data_source(data_source_config)
+        data_sources = JourneyWalker::DataSource.find_data_source(data_source_config[:type])
+        config_error(t.error.unknown_source_type(data_source_config[:type])) if data_sources.empty?
+        data_sources[0].validate(data_source_config)
+      end
 
       def validate_transitions(transitions_config)
         transitions_config.each do |transition|

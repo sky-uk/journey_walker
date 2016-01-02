@@ -23,10 +23,11 @@
     {
       "type": "custom",
       "name": "OS Adviser",
-      "class_name": "SomeThing::SomeWhere::OSAdviser",
-      "methods": [
-        "os",
-        "install_method"
+      "parameters": [
+        {
+          "name": "class_name",
+          "value": "SomeThing::SomeWhere::OSAdviser"
+        }
       ]
     }
   ],
@@ -49,9 +50,9 @@
           "source_call": {
             "source": "OS Adviser",
             "method": "os",
-            "parameters":[
+            "parameters": [
               {
-                "name":"capitalise",
+                "name": "capitalise",
                 "value": true
               }
             ]

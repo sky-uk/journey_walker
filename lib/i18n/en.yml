@@ -1,7 +1,9 @@
 error:
   no_method: "no method is defined for condition \"%1\""
   unknown_source: "condition has unknown data source %1 in \"%2\""
+  unknown_source_type: "data source has unknown type \"%1\""
   invalid_state: "Invalid state name \"%1\""
+  data_source_class_name_missing: "Cannot find class_name parameter for data source \"%1\""
   data_source_class_missing: "Cannot find data source class '%1' for data source '%2'"
   data_source_method_missing: "Cannot call (possibly find) data source method '%1'"
   unknown_action: "Could not find action '%1' for state '%2'"

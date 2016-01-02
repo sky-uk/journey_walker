@@ -53,9 +53,15 @@
           },
           "name": {
             "type": "string"
+          },
+          "parameters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/parameter"
+            }
           }
         },
-        "additionalProperties": true,
+        "additionalProperties": false,
         "required": [
           "type",
           "name"
