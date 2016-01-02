@@ -54,7 +54,7 @@ describe JourneyWalker::Journey do
       current_state = journey.start
       allowed_actions = journey.allowed_actions(current_state.name)
       expect(allowed_actions.size).to eq(2)
-      expect(allowed_actions).to include('proceed', 'cancel')
+      expect(allowed_actions).to include({ name: 'proceed', data: nil }, name: 'cancel', data: nil)
     end
   end
 end

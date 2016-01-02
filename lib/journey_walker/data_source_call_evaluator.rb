@@ -11,7 +11,7 @@ module JourneyWalker
       data_source = @config.data_source(source_call.source)
       # Map all the parameters to basic values rather than source calls
       parameters = source_call.parameters.map do |parameter|
-        JourneyWalker::Config::DataSourceCallParameterConfig.new(parameter.name, evaluate_parameter(parameter.value))
+        JourneyWalker::Config::ParameterConfig.new(parameter.name, evaluate_parameter(parameter.value))
       end
       JourneyWalker::DataSources::Custom.new.evaluate(data_source, source_call.source_method, parameters)
     end

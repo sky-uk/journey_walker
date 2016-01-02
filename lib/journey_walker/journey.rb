@@ -29,9 +29,10 @@ module JourneyWalker
 
     def allowed_actions(current_state_name)
       current_state = @config.state(current_state_name)
-      @config.transitions.find_all do |potential_transition|
+      transitions = @config.transitions.find_all do |potential_transition|
         evaluate_transition(current_state, potential_transition)
-      end.map(&:action).uniq
+      end
+      transitions.map { |transition| { name: transition.action, data: transition.data } }.uniq
     end
 
     private

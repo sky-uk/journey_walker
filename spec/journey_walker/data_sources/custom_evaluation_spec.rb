@@ -3,7 +3,7 @@ require_relative '../../../lib/journey_walker/data_sources/custom_config'
 require_relative '../../../lib/journey_walker'
 require_relative '../../../lib/journey_walker/data_sources/custom'
 require_relative '../../../lib/journey_walker/journey_error'
-require_relative '../../../lib/journey_walker/config/data_source_call_parameter_config'
+require_relative '../../../lib/journey_walker/config/parameter_config'
 
 describe JourneyWalker::DataSources::Custom do
   let(:data_source) do
@@ -48,8 +48,8 @@ describe JourneyWalker::DataSources::Custom do
     before do
       make_data_source_methods('linux', 'apt')
     end
-    let(:parameters) { [JourneyWalker::Config::DataSourceCallParameterConfig.new('capitalise', true)] }
-    let(:parameters) { [JourneyWalker::Config::DataSourceCallParameterConfig.new('capitalise', true)] }
+    let(:parameters) { [JourneyWalker::Config::ParameterConfig.new('capitalise', true)] }
+    let(:parameters) { [JourneyWalker::Config::ParameterConfig.new('capitalise', true)] }
 
     it 'should return true for matching switch' do
       expect(described_class.new.evaluate(data_source, 'os', parameters)).to eq('Linux')

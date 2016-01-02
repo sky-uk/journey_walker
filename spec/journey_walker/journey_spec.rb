@@ -40,6 +40,8 @@ describe JourneyWalker::Journey do
     current_state = journey.start
     transitions = journey.allowed_actions(current_state.name)
     expect(transitions.length).to eq(3)
-    expect(transitions).to include('check', 'proceed', 'secondary_proceed')
+    expect(transitions).to include({ name: 'check', data: nil },
+                                   { name: 'proceed', data: nil },
+                                   name: 'secondary_proceed', data: { friendly_name: 'Secondary Proceed' })
   end
 end

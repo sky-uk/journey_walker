@@ -38,12 +38,18 @@
     {
       "from": "state1",
       "to": "state2",
-      "action": "secondary_proceed"
+      "action": "secondary_proceed",
+      "data": {
+        "friendly_name": "Secondary Proceed"
+      }
     },
     {
       "from": "state1",
       "to": "state3",
-      "action": "secondary_proceed"
+      "action": "secondary_proceed",
+      "data": {
+        "friendly_name": "Secondary Proceed"
+      }
     }
   ]
 }
