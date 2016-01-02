@@ -57,7 +57,7 @@ module JourneyWalker
       def parse_conditions(conditions)
         return [] if conditions.nil?
         conditions.collect do |condition|
-          ConditionConfig.new(condition[:value],
+          ConditionConfig.new(parse_config_value(condition[:value]),
                               parse_source_call(condition[:source_call]))
         end
       end
@@ -68,10 +68,10 @@ module JourneyWalker
 
       def parse_parameters(parameters)
         return [] if parameters.nil?
-        parameters.map { |param| DataSourceCallParameterConfig.new(param[:name], parse_param_value(param[:value])) }
+        parameters.map { |param| DataSourceCallParameterConfig.new(param[:name], parse_config_value(param[:value])) }
       end
 
-      def parse_param_value(param_value)
+      def parse_config_value(param_value)
         return param_value unless param_value.is_a?(Hash) && param_value.key?(:source)
         parse_source_call(param_value)
       end
