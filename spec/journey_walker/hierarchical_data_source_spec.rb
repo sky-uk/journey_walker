@@ -21,7 +21,7 @@ describe JourneyWalker::Journey do
 
   it 'should return state2 based on multiply and fetch number methods' do
     current_state = journey.start
-    current_state = journey.perform_action(current_state.name, 'proceed')
-    expect(current_state.name).to eq('state2')
+    current_state = journey.perform_action(current_state[:name], 'proceed')
+    expect(current_state[:name]).to eq('state2')
   end
 end

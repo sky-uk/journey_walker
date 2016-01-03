@@ -1,7 +1,13 @@
 {
   "states": [
     {
-      "name": "state1"
+      "name": "state1",
+      "data": [
+        {
+          "name": "data_val",
+          "value": true
+        }
+      ]
     },
     {
       "name": "state2"

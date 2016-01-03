@@ -15,7 +15,7 @@ module JourneyWalker
     end
 
     def start
-      initial_state
+      state_to_state_hash(initial_state)
     end
 
     def perform_action(current_state_name, action)
@@ -24,7 +24,7 @@ module JourneyWalker
         evaluate_transition_for_action(action, current_state, potential_transition)
       end
       validate_actions(action, current_state, transitions)
-      state(transitions[0].to)
+      state_to_state_hash(state(transitions[0].to))
     end
 
     def allowed_actions(current_state_name)
@@ -36,6 +36,12 @@ module JourneyWalker
     end
 
     private
+
+    def state_to_state_hash(state)
+      name = state.name
+      data = state.data.nil? ? nil : state.data.map(&:marshal_dump)
+      { name: name, data: data }
+    end
 
     def transition_to_action_hash(transitions)
       transitions.map do |transition|

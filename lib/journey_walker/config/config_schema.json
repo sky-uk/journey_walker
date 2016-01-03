@@ -35,6 +35,12 @@
         "properties": {
           "name": {
             "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/parameter"
+            }
           }
         },
         "additionalProperties": false,

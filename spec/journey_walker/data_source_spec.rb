@@ -23,35 +23,35 @@ describe JourneyWalker::Journey do
     it 'should return windows page when os adviser data source returns windows' do
       make_data_source_methods('windows', '')
       current_state = journey.start
-      expect(current_state.name).to eq('intro')
-      current_state = journey.perform_action(current_state.name, 'proceed')
-      expect(current_state.name).to eq('windows')
-      current_state = journey.perform_action(current_state.name, 'finish')
-      expect(current_state.name).to eq('completed')
+      expect(current_state[:name]).to eq('intro')
+      current_state = journey.perform_action(current_state[:name], 'proceed')
+      expect(current_state[:name]).to eq('windows')
+      current_state = journey.perform_action(current_state[:name], 'finish')
+      expect(current_state[:name]).to eq('completed')
     end
 
     it 'should return linux apt-get page when os adviser data source returns linux and apt' do
       make_data_source_methods('linux', 'apt')
       current_state = journey.start
-      expect(current_state.name).to eq('intro')
-      current_state = journey.perform_action(current_state.name, 'proceed')
-      expect(current_state.name).to eq('linux apt-get')
-      current_state = journey.perform_action(current_state.name, 'finish')
-      expect(current_state.name).to eq('completed')
+      expect(current_state[:name]).to eq('intro')
+      current_state = journey.perform_action(current_state[:name], 'proceed')
+      expect(current_state[:name]).to eq('linux apt-get')
+      current_state = journey.perform_action(current_state[:name], 'finish')
+      expect(current_state[:name]).to eq('completed')
     end
 
     it 'should throw an error when no matching transition is found' do
       make_data_source_methods('linux', 'wget')
       current_state = journey.start
-      expect(current_state.name).to eq('intro')
-      expect { journey.perform_action(current_state.name, 'proceed') }
+      expect(current_state[:name]).to eq('intro')
+      expect { journey.perform_action(current_state[:name], 'proceed') }
         .to raise_error(JourneyWalker::JourneyError, /proceed.*intro|intro*.proceed/)
     end
 
     it 'should only return allowed actions' do
       make_data_source_methods('windows', '')
       current_state = journey.start
-      allowed_actions = journey.allowed_actions(current_state.name)
+      allowed_actions = journey.allowed_actions(current_state[:name])
       expect(allowed_actions.size).to eq(2)
       expect(allowed_actions).to include({ name: 'proceed', data: nil }, name: 'cancel', data: nil)
     end
