@@ -2,6 +2,9 @@
 
 Journey Walker is a ruby gem facilitating any state-machine like process such as wizards, choose your own adventure games, A/B tests etc.
 
+## Status
+See the specs for what is possible - consider it alpha at the minute.
+
 ## Installation
 
 Add this line to your application's Gemfile:
