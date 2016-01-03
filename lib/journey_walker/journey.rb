@@ -24,7 +24,7 @@ module JourneyWalker
         evaluate_transition_for_action(action, current_state, potential_transition)
       end
       validate_actions(action, current_state, transitions)
-      state_to_state_hash(state(transitions[0].to))
+      current_state(transitions[0].to)
     end
 
     def allowed_actions(current_state_name)
@@ -35,12 +35,24 @@ module JourneyWalker
       transition_to_action_hash(transitions).uniq
     end
 
+    def current_state(current_state_name)
+      state_to_state_hash(state(current_state_name))
+    end
+
     private
 
     def state_to_state_hash(state)
       name = state.name
-      data = state.data.nil? ? nil : state.data.map(&:marshal_dump)
+      data = name_value_to_hash(state.data)
       { name: name, data: data }
+    end
+
+    def name_value_to_hash(name_value_array)
+      result = {}
+      name_value_array.each do |row|
+        result[row[:name].to_sym] = @data_source_evaluator.evaluate(row[:value])
+      end unless name_value_array.nil?
+      result
     end
 
     def transition_to_action_hash(transitions)

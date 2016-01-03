@@ -26,7 +26,7 @@ describe JourneyWalker::Journey do
 
   it 'should get data associated with state' do
     current_state = journey.start
-    expect(current_state[:data]).to eq([{ name: 'data_val', value: true }])
+    expect(current_state[:data]).to eq("data_val": true)
   end
 
   it 'should throw an exception for an unknown action' do
