@@ -49,7 +49,7 @@
         {
           "source_call": {
             "source": "OS Adviser",
-            "method": "os",
+            "source_method": "os",
             "parameters": [
               {
                 "name": "capitalise",
@@ -62,7 +62,7 @@
         {
           "source_call": {
             "source": "OS Adviser",
-            "method": "install_method"
+            "source_method": "install_method"
           },
           "value": "apt"
         }
@@ -76,14 +76,14 @@
         {
           "source_call": {
             "source": "OS Adviser",
-            "method": "os"
+            "source_method": "os"
           },
           "value": "linux"
         },
         {
           "source_call": {
             "source": "OS Adviser",
-            "method": "install_method"
+            "source_method": "install_method"
           },
           "value": "rpm"
         }
@@ -97,7 +97,7 @@
         {
           "source_call": {
             "source": "OS Adviser",
-            "method": "os"
+            "source_method": "os"
           },
           "value": "windows"
         }

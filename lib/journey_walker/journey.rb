@@ -1,5 +1,5 @@
 require 'r18n-core'
-require_relative 'config/journey_config'
+require_relative 'config/journey_loader'
 require_relative 'journey_error'
 require_relative 'data_sources/custom'
 require_relative 'data_source_call_evaluator'
@@ -10,7 +10,7 @@ module JourneyWalker
     include R18n::Helpers
 
     def initialize(config)
-      @config = JourneyWalker::Config::JourneyConfig.new(config)
+      @config = JourneyWalker::Config::JourneyLoader.load(config)
       @data_source_evaluator = JourneyWalker::DataSourceCallEvaluator.new(@config)
     end
 
@@ -19,23 +19,31 @@ module JourneyWalker
     end
 
     def perform_action(current_state_name, action)
-      current_state = @config.state(current_state_name)
+      current_state = state(current_state_name)
       transitions = @config.transitions.find_all do |potential_transition|
         evaluate_transition_for_action(action, current_state, potential_transition)
       end
       validate_actions(action, current_state, transitions)
-      @config.state(transitions[0].to)
+      state(transitions[0].to)
     end
 
     def allowed_actions(current_state_name)
-      current_state = @config.state(current_state_name)
+      current_state = state(current_state_name)
       transitions = @config.transitions.find_all do |potential_transition|
         evaluate_transition(current_state, potential_transition)
       end
-      transitions.map { |transition| { name: transition.action, data: transition.data } }.uniq
+      transition_to_action_hash(transitions).uniq
     end
 
     private
+
+    def transition_to_action_hash(transitions)
+      transitions.map do |transition|
+        name = transition.action
+        data = transition.data.nil? ? nil : transition.data.marshal_dump
+        { name: name, data: data }
+      end
+    end
 
     def evaluate_transition(current_state, potential_transition)
       potential_transition.from == current_state.name &&
@@ -64,7 +72,11 @@ module JourneyWalker
     end
 
     def initial_state
-      @config.state(@config.transitions.find { |transition| transition.from.nil? }.to)
+      state(@config.transitions.find { |transition| transition.from.nil? }.to)
+    end
+
+    def state(state_name)
+      @config.states.find { |state| state.name == state_name }
     end
   end
 end

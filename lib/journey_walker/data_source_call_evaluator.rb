@@ -8,11 +8,12 @@ module JourneyWalker
     end
 
     def evaluate(source_call)
-      data_source_config = @config.data_source(source_call.source)
+      data_source_config = data_source(source_call.source)
       # Map all the parameters to basic values rather than source calls
+      parameters = []
       parameters = source_call.parameters.map do |parameter|
-        JourneyWalker::Config::ParameterConfig.new(parameter.name, evaluate_parameter(parameter.value))
-      end
+        OpenStruct.new(name: parameter.name, value: evaluate_parameter(parameter.value))
+      end if source_call.respond_to?(:parameters)
       data_source_class = JourneyWalker::DataSource.find_data_source(data_source_config.type)[0]
       data_source_class.new.evaluate(data_source_config, source_call.source_method, parameters)
     end
@@ -24,6 +25,10 @@ module JourneyWalker
     def evaluate_parameter(value)
       return value unless value.respond_to?(:source)
       evaluate(value)
+    end
+
+    def data_source(source_name)
+      @config.data_sources.find { |source| source.name == source_name }
     end
   end
 end

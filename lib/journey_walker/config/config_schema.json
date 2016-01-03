@@ -147,7 +147,7 @@
         "source": {
           "type": "string"
         },
-        "method": {
+        "source_method": {
           "type": "string"
         },
         "parameters": {
@@ -160,7 +160,7 @@
       "additionalProperties": false,
       "required": [
         "source",
-        "method"
+        "source_method"
       ]
     },
     "parameter": {

@@ -1,17 +1,12 @@
 require_relative '../../spec_helper'
-require_relative '../../../lib/journey_walker/config/data_source_config'
-require_relative '../../../lib/journey_walker/config/parameter_config'
 require_relative '../../../lib/journey_walker/data_sources/custom'
 require_relative '../../../lib/journey_walker/journey_error'
-require_relative '../../../lib/journey_walker/config/parameter_config'
 
 describe JourneyWalker::DataSources::Custom do
   let(:config_error) { JourneyWalker::Config::InvalidConfigError }
   let(:data_source) do
-    class_param = JourneyWalker::Config::ParameterConfig.new('class_name', 'SomeThing::SomeWhere::OSAdviser')
-    JourneyWalker::Config::DataSourceConfig.new('custom',
-                                                'OS Advisor',
-                                                [class_param])
+    class_param = OpenStruct.new(name: 'class_name', value: 'SomeThing::SomeWhere::OSAdviser')
+    OpenStruct.new(type: 'custom', name: 'OS Advisor', parameters: [class_param])
   end
 
   context 'data source class not found' do
@@ -50,8 +45,7 @@ describe JourneyWalker::DataSources::Custom do
     before do
       make_data_source_methods('linux', 'apt')
     end
-    let(:parameters) { [JourneyWalker::Config::ParameterConfig.new('capitalise', true)] }
-    let(:parameters) { [JourneyWalker::Config::ParameterConfig.new('capitalise', true)] }
+    let(:parameters) { [OpenStruct.new(name: 'capitalise', value: true)] }
 
     it 'should return true for matching switch' do
       expect(described_class.new.evaluate(data_source, 'os', parameters)).to eq('Linux')

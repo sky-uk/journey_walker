@@ -32,7 +32,7 @@
         {
           "source_call": {
             "source": "Test Source",
-            "method": "multiply",
+            "source_method": "multiply",
             "parameters": [
               {
                 "name": "multiple1",
@@ -42,7 +42,7 @@
                 "name": "multiple2",
                 "value": {
                   "source": "Test Source",
-                  "method": "fetch_number",
+                  "source_method": "fetch_number",
                   "parameters": [
                     {
                       "name": "number",

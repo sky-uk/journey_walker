@@ -1,3 +1,4 @@
+require_relative '../spec_helper'
 require_relative '../../lib/journey_walker/journey_error'
 require 'json'
 

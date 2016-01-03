@@ -51,7 +51,7 @@ module JourneyWalker
       end
 
       def data_source_class(data_source)
-        class_name_param = data_source.parameter('class_name')
+        class_name_param = parameter(data_source, 'class_name')
         class_name_param.value.split('::').inject(Kernel) do |scope, module_or_class|
           scope.const_get(module_or_class)
         end
@@ -65,6 +65,10 @@ module JourneyWalker
         end
       rescue
         nil
+      end
+
+      def parameter(data_source, parameter_name)
+        data_source.parameters.find { |parameter| parameter.name == parameter_name }
       end
     end
   end
