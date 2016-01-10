@@ -11,27 +11,27 @@ module JourneyWalker
 
     def initialize(config)
       @config = JourneyWalker::Config::JourneyLoader.load(config)
-      @data_source_evaluator = JourneyWalker::ConfigValueEvaluator.new(@config)
+      @config_value_evaluator = JourneyWalker::ConfigValueEvaluator.new(@config)
     end
 
     def start
       state_to_state_hash(initial_state)
     end
 
-    def perform_action(current_state_name, action)
+    def perform_action(current_state_name, action, action_params: {})
       current_state = state(current_state_name)
       transitions = @config.transitions.find_all do |potential_transition|
-        evaluate_transition_for_action(action, current_state, potential_transition)
+        evaluate_transition_for_action(action, current_state, potential_transition, action_params)
       end
       validate_actions(action, current_state, transitions)
-      fire_events(transitions[0])
+      fire_events(transitions[0], action_params)
       current_state(transitions[0].to)
     end
 
-    def allowed_actions(current_state_name)
+    def allowed_actions(current_state_name, action_params: {})
       current_state = state(current_state_name)
       transitions = @config.transitions.find_all do |potential_transition|
-        evaluate_transition(current_state, potential_transition)
+        evaluate_transition(current_state, potential_transition, action_params)
       end
       transition_to_action_hash(transitions).uniq
     end
@@ -42,10 +42,10 @@ module JourneyWalker
 
     private
 
-    def fire_events(transition)
+    def fire_events(transition, action_params)
       return if transition.events.nil?
       transition.events.each do |event|
-        @data_source_evaluator.evaluate(event)
+        @config_value_evaluator.evaluate(event, action_params)
       end
     end
 
@@ -58,7 +58,8 @@ module JourneyWalker
     def name_value_to_hash(name_value_array)
       result = {}
       name_value_array.each do |row|
-        result[row[:name].to_sym] = @data_source_evaluator.evaluate(row[:value])
+        # Note how action params are not sent through here - we aren't performing an action.
+        result[row[:name].to_sym] = @config_value_evaluator.evaluate(row[:value], action_params: {})
       end unless name_value_array.nil?
       result
     end
@@ -71,22 +72,22 @@ module JourneyWalker
       end
     end
 
-    def evaluate_transition(current_state, potential_transition)
+    def evaluate_transition(current_state, potential_transition, action_params)
       potential_transition.from == current_state.name &&
-        evaluate_conditions(potential_transition)
+        evaluate_conditions(potential_transition, action_params)
     end
 
-    def evaluate_transition_for_action(action, current_state, potential_transition)
+    def evaluate_transition_for_action(action, current_state, potential_transition, action_params)
       potential_transition.from == current_state.name &&
         potential_transition.action == action &&
-        evaluate_conditions(potential_transition)
+        evaluate_conditions(potential_transition, action_params)
     end
 
-    def evaluate_conditions(potential_transition)
+    def evaluate_conditions(potential_transition, action_params)
       return true if potential_transition.conditions.nil?
 
       potential_transition.conditions.each do |condition|
-        source_response = @data_source_evaluator.evaluate(condition.source_call)
+        source_response = @config_value_evaluator.evaluate(condition.source_call, action_params)
         return false unless source_response == condition.value
       end
       true

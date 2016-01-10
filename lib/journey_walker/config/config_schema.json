@@ -141,7 +141,7 @@
         "properties": {
           "source_call": {
             "type": "object",
-            "$ref": "#/definitions/sourceCall"
+            "$ref": "#/definitions/configValue"
           },
           "value": {
             "$ref": "#/definitions/configValue"
@@ -190,14 +190,35 @@
         "value"
       ]
     },
+    "actionParameter": {
+      "properties": {
+        "type": {
+          "enum": ["action_param"]
+        },
+        "name": {
+          "type": "string"
+        },
+        "default":{
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "name"
+      ]
+    },
     "configValue": {
       // A config value is either any value (including hashes) or a source call.  It would be simpler to just allow
       // anything to be set here but it's kind of self-documenting.  Apart from the need for this long comment.
       // Allowed 1: A source call
       //         2: A non-object i.e. true, 123456, "hello"
-      //         3: An object which does not respond to source
+      //         3: An object which does not respond to "source"
+      //         4: An action parameter which must be passed into the call to perform_action (has a type of
+      //            "action_param") N.B. These are NOT supported in data for a source.
       // Not allowed 1: An object which responds to source but is not a source call e.g.
       //               { "name" = "myobj", "source" = "hi" } is invalid
+      //             2: An object with a key of "type" with a value of "action_param" and anything more than just an
+      //                expected name
       "oneOf": [
         {
           "not": {
@@ -212,6 +233,10 @@
         {
           "type": "object",
           "$ref": "#/definitions/sourceCall"
+        },
+        {
+          "type": "object",
+          "$ref": "#/definitions/actionParameter"
         }
       ]
     }

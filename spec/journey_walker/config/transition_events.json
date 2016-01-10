@@ -47,7 +47,10 @@
                 "parameters": [
                   {
                     "name": "number",
-                    "value": 3
+                    "value": {
+                      "type": "action_param",
+                      "name": "my_action_param"
+                    }
                   }
                 ]
               }

@@ -8,6 +8,7 @@ error:
   data_source_method_missing: "Cannot call (possibly find) data source method '%1'"
   unknown_action: "Could not find action '%1' for state '%2'"
   too_many_actions: "Too many actions for action named '%1' for state '%2'"
+  missing_action_parameter: "Could not find parameter '%1' in params '%2'"
 
 data_source_error:
   wrong_type: "Should not be validating %1 in %2 class"
