@@ -1,8 +1,8 @@
 module JourneyWalker
-  # This class takes a data source call, and evaluates it hierarchically so that all parameters which require their
-  # own data source calls are executed first etc.  This is also the point where data sources are chosen based on
+  # This class takes a config value, and evaluates it hierarchically so that all parameters which require their
+  # own config values are executed first etc.  This is also the point where data sources are chosen based on
   # the 'type'
-  class DataSourceCallEvaluator
+  class ConfigValueEvaluator
     def initialize(config)
       @config = config
     end

@@ -124,16 +124,7 @@
         "events": {
           "type": "array",
           "items": {
-            "properties": {
-              "source_call": {
-                "type": "object",
-                "$ref": "#/definitions/sourceCall"
-              }
-            },
-            "additionalProperties": false,
-            "required": [
-              "source_call"
-            ]
+            "$ref": "#/definitions/configValue"
           }
         }
       },

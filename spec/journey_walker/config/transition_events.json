@@ -34,27 +34,25 @@
       "from": "state1",
       "to": "state1",
       "action": "save",
-      "events":[
+      "events": [
         {
-          "source_call": {
-            "source": "Test Source",
-            "source_method": "update_numeric_value",
-            "parameters": [
-              {
-                "name": "number",
-                "value":  {
-                  "source": "Test Source",
-                  "source_method": "fetch_number",
-                  "parameters": [
-                    {
-                      "name": "number",
-                      "value": 3
-                    }
-                  ]
-                }
+          "source": "Test Source",
+          "source_method": "update_numeric_value",
+          "parameters": [
+            {
+              "name": "number",
+              "value": {
+                "source": "Test Source",
+                "source_method": "fetch_number",
+                "parameters": [
+                  {
+                    "name": "number",
+                    "value": 3
+                  }
+                ]
               }
-            ]
-          }
+            }
+          ]
         }
       ]
     }
