@@ -24,6 +24,7 @@ module JourneyWalker
         evaluate_transition_for_action(action, current_state, potential_transition)
       end
       validate_actions(action, current_state, transitions)
+      fire_events(transitions[0])
       current_state(transitions[0].to)
     end
 
@@ -40,6 +41,13 @@ module JourneyWalker
     end
 
     private
+
+    def fire_events(transition)
+      return if transition.events.nil?
+      transition.events.each do |event|
+        @data_source_evaluator.evaluate(event.source_call)
+      end
+    end
 
     def state_to_state_hash(state)
       name = state.name

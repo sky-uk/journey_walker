@@ -1,0 +1,62 @@
+{
+  "states": [
+    {
+      "name": "state1",
+      "data": [
+        {
+          "name": "data_val",
+          "value": {
+            "source": "Test Source",
+            "source_method": "fetch_numeric_value"
+          }
+        }
+      ]
+    }
+  ],
+  "data_sources": [
+    {
+      "type": "custom",
+      "name": "Test Source",
+      "parameters": [
+        {
+          "name": "class_name",
+          "value": "JourneyWalkerTests"
+        }
+      ]
+    }
+  ],
+  "transitions": [
+    {
+      "to": "state1",
+      "action": "start"
+    },
+    {
+      "from": "state1",
+      "to": "state1",
+      "action": "save",
+      "events":[
+        {
+          "source_call": {
+            "source": "Test Source",
+            "source_method": "update_numeric_value",
+            "parameters": [
+              {
+                "name": "number",
+                "value":  {
+                  "source": "Test Source",
+                  "source_method": "fetch_number",
+                  "parameters": [
+                    {
+                      "name": "number",
+                      "value": 3
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
