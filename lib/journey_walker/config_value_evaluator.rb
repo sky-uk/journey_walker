@@ -8,8 +8,9 @@ module JourneyWalker
   class ConfigValueEvaluator
     include R18n::Helpers
 
-    def initialize(config)
+    def initialize(config, services={})
       @config = config
+      @services=services
     end
 
     def evaluate(value, action_params)
@@ -22,7 +23,7 @@ module JourneyWalker
 
     def evaluate_action_param(action_param_definition, action_params)
       unless action_params.key?(action_param_definition.name.to_sym)
-        fail JourneyError, t.error.missing_action_parameter(action_param_definition.name, action_params.keys.join)
+        raise JourneyError, t.error.missing_action_parameter(action_param_definition.name, action_params.keys.join)
       end
       action_params[action_param_definition.name.to_sym]
     end
@@ -37,7 +38,7 @@ module JourneyWalker
       end if source_call.respond_to?(:parameters)
 
       data_source_class = JourneyWalker::DataSource.find_data_source(data_source_config.type)[0]
-      data_source_class.new.evaluate(data_source_config, source_call.source_method, parameters)
+      data_source_class.new.evaluate(data_source_config, source_call.source_method, parameters, @services)
     end
 
     def data_source(source_name)

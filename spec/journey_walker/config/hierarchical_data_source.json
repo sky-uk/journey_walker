@@ -5,6 +5,9 @@
     },
     {
       "name": "state2"
+    },
+    {
+      "name": "state3"
     }
   ],
   "data_sources": [
@@ -54,6 +57,20 @@
             ]
           },
           "value": 6
+        }
+      ]
+    },
+    {
+      "from": "state1",
+      "to": "state3",
+      "action": "service_proceed",
+      "conditions": [
+        {
+          "source_call": {
+            "source": "Test Source",
+            "source_method": "service_call"
+          },
+          "value": "service_value"
         }
       ]
     }

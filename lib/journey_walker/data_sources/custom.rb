@@ -31,21 +31,30 @@ module JourneyWalker
         config_error(translate.data_source_error.missing_class(class_name)) if class_instance(class_name).nil?
       end
 
-      def evaluate(data_source_config, method, parameters)
+      def evaluate(data_source_config, method, parameters, services = {})
         data_source_class = data_source_class(data_source_config)
         call_data_source_method(data_source_class,
                                 method,
-                                parameters.map(&:value))
+                                parameters.map(&:value),
+                                services)
       end
-
-      private
 
       def self.translate(*params)
         R18n.get.t(*params)
       end
 
-      def call_data_source_method(data_source_class, method, params)
-        data_source_class.new.send(method, *params)
+      def self.class_instance(class_name)
+        class_name.split('::').inject(Kernel) do |scope, module_or_class|
+          scope.const_get(module_or_class)
+        end
+      rescue
+        nil
+      end
+
+      private
+
+      def call_data_source_method(data_source_class, method, params, services = {})
+        data_source_class.new(services).send(method, *params)
       rescue
         raise(JourneyError, t.error.data_source_method_missing(method))
       end
@@ -57,14 +66,6 @@ module JourneyWalker
         end
       rescue
         raise(JourneyError, t.error.data_source_class_missing(class_name_param.value, data_source.name))
-      end
-
-      def self.class_instance(class_name)
-        class_name.split('::').inject(Kernel) do |scope, module_or_class|
-          scope.const_get(module_or_class)
-        end
-      rescue
-        nil
       end
 
       def parameter(data_source, parameter_name)

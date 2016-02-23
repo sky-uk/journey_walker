@@ -9,9 +9,9 @@ module JourneyWalker
   class Journey
     include R18n::Helpers
 
-    def initialize(config)
+    def initialize(config, services={})
       @config = JourneyWalker::Config::JourneyLoader.load(config)
-      @config_value_evaluator = JourneyWalker::ConfigValueEvaluator.new(@config)
+      @config_value_evaluator = JourneyWalker::ConfigValueEvaluator.new(@config, services)
     end
 
     def start
@@ -94,8 +94,8 @@ module JourneyWalker
     end
 
     def validate_actions(action, current_state, transitions)
-      fail JourneyError, t.error.unknown_action(action, current_state.name) if transitions.empty?
-      fail JourneyError, t.error.too_many_actions(action, current_state.name) if transitions.size > 1
+      raise JourneyError, t.error.unknown_action(action, current_state.name) if transitions.empty?
+      raise JourneyError, t.error.too_many_actions(action, current_state.name) if transitions.size > 1
     end
 
     def initial_state

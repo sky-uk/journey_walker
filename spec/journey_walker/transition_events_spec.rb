@@ -25,9 +25,9 @@ describe JourneyWalker::Journey do
   it 'should execute the event data source call' do
     current_state = journey.start
     JourneyWalkerTests.update_numeric_class_value(1)
-    expect(JourneyWalkerTests.new.fetch_numeric_value).to eq(1)
+    expect(JourneyWalkerTests.new(nil).fetch_numeric_value).to eq(1)
     current_state = journey.perform_action(current_state[:name], 'save', action_params: { my_action_param: 3 })
     expect(current_state[:name]).to eq('state1')
-    expect(JourneyWalkerTests.new.fetch_numeric_value).to eq(3)
+    expect(JourneyWalkerTests.new(nil).fetch_numeric_value).to eq(3)
   end
 end

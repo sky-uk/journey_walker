@@ -74,7 +74,7 @@ module JourneyWalker
       end
 
       def config_error(message)
-        fail(InvalidConfigError, message)
+        raise(InvalidConfigError, message)
       end
     end
   end

@@ -41,14 +41,24 @@ describe JourneyWalker::DataSources::Custom do
     end
   end
 
-  context 'gets data source response dependant on parameters' do
+  context 'gets data source response' do
     before do
       make_data_source_methods('linux', 'apt')
     end
-    let(:parameters) { [OpenStruct.new(name: 'capitalise', value: true)] }
 
     it 'should return true for matching switch' do
-      expect(described_class.new.evaluate(data_source, 'os', parameters)).to eq('Linux')
+      expect(described_class.new.evaluate(data_source, 'os', [])).to eq('linux')
+    end
+  end
+
+  context 'gets data source response dependant on parameters' do
+    before do
+      make_data_source_methods('linux', 'apt')
+      allow(services[:os_service]).to receive(:service_method).and_return('service_value')
+    end
+    let(:services) { { os_service: double } }
+    it 'should return true for matching switch' do
+      expect(described_class.new.evaluate(data_source, 'service_call', {}, services)).to eq('service_value')
     end
   end
 

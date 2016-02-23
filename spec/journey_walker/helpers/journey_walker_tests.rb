@@ -2,6 +2,14 @@
 class JourneyWalkerTests
   @numeric_value = 1
 
+  def initialize(services)
+    @os_service=services[:os_service]
+  end
+
+  def service_call
+    @os_service.service_method
+  end
+
   def multiply(x, y)
     x * y
   end
