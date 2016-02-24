@@ -8,9 +8,9 @@ module JourneyWalker
   class ConfigValueEvaluator
     include R18n::Helpers
 
-    def initialize(config, services={})
+    def initialize(config, services = {})
       @config = config
-      @services=services
+      @services = services
     end
 
     def evaluate(value, action_params)

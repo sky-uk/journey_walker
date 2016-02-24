@@ -13,7 +13,8 @@ describe JourneyWalker::Journey do
   let(:config) do
     JSON.parse(File.read('spec/journey_walker/config/transition_events.json'), symbolize_names: true)
   end
-  let(:journey) { described_class.new(config) }
+  let(:services) { { os_service: double } }
+  let(:journey) { described_class.new(config, services) }
 
   it 'should raise an error when a non-defaulted parameter is missing' do
     current_state = journey.start
@@ -25,9 +26,9 @@ describe JourneyWalker::Journey do
   it 'should execute the event data source call' do
     current_state = journey.start
     JourneyWalkerTests.update_numeric_class_value(1)
-    expect(JourneyWalkerTests.new(nil).fetch_numeric_value).to eq(1)
+    expect(JourneyWalkerTests.new(services).fetch_numeric_value).to eq(1)
     current_state = journey.perform_action(current_state[:name], 'save', action_params: { my_action_param: 3 })
     expect(current_state[:name]).to eq('state1')
-    expect(JourneyWalkerTests.new(nil).fetch_numeric_value).to eq(3)
+    expect(JourneyWalkerTests.new(services).fetch_numeric_value).to eq(3)
   end
 end

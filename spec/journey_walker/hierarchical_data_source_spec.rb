@@ -17,7 +17,7 @@ describe JourneyWalker::Journey do
   let(:config) do
     JSON.parse(File.read('spec/journey_walker/config/hierarchical_data_source.json'), symbolize_names: true)
   end
-  let(:services) { {os_service: double} }
+  let(:services) { { os_service: double } }
   let(:journey) { described_class.new(config, services) }
 
   it 'should return state2 based on multiply and fetch number methods' do
@@ -27,7 +27,6 @@ describe JourneyWalker::Journey do
   end
 
   context 'journey with injected services' do
-
     it 'call service method' do
       allow(services[:os_service]).to receive(:service_method).and_return('service_value')
       current_state = journey.start

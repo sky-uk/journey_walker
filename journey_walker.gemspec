@@ -15,10 +15,11 @@ Gem::Specification.new do |spec|
   spec.files         = Dir.glob('lib/**/*') + %w(LICENSE README.md)
   spec.require_paths = ['lib']
 
+  spec.add_dependency 'geminabox'
   spec.add_runtime_dependency 'r18n-core'
   spec.add_runtime_dependency 'json-schema'
   spec.add_runtime_dependency 'recursive-open-struct'
-  spec.add_development_dependency 'bundler', '~> 1.10'
+  spec.add_development_dependency 'bundler'
   spec.add_development_dependency 'rake', '~> 10.0'
   spec.add_development_dependency 'rspec'
   spec.add_development_dependency 'rubocop'

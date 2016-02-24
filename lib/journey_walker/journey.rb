@@ -9,7 +9,7 @@ module JourneyWalker
   class Journey
     include R18n::Helpers
 
-    def initialize(config, services={})
+    def initialize(config, services = {})
       @config = JourneyWalker::Config::JourneyLoader.load(config)
       @config_value_evaluator = JourneyWalker::ConfigValueEvaluator.new(@config, services)
     end
