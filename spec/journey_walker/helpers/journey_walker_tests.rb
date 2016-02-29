@@ -3,7 +3,7 @@ class JourneyWalkerTests
   @numeric_value = 1
 
   def initialize(services)
-    @os_service=services[:os_service]
+    @os_service = services[:os_service]
   end
 
   def service_call
