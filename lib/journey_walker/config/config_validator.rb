@@ -53,7 +53,7 @@ module JourneyWalker
 
       def validate_condition(condition, transition)
         config_error(t.error.unknown_source(condition[:source_call][:source].to_json, transition.to_json)) unless
-            data_source_exists(condition[:source_call][:source])
+            data_source_exists(condition[:source_call][:source]) || condition[:source_call][:source].nil?
       end
 
       def validate_to(transition)

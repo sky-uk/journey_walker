@@ -11,5 +11,9 @@ module JourneyWalker
     def self.config_error(message)
       raise(JourneyWalker::Config::InvalidConfigError, message)
     end
+
+    def parameter(parameters, parameter_name)
+      parameters.find { |parameter| parameter.name == parameter_name }
+    end
   end
 end
