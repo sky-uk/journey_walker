@@ -22,9 +22,6 @@ module JourneyWalker
     private
 
     def evaluate_action_param(action_param_definition, action_params)
-      unless action_params.key?(action_param_definition.name.to_sym)
-        raise JourneyError, t.error.missing_action_parameter(action_param_definition.name, action_params.keys.join)
-      end
       action_params[action_param_definition.name.to_sym]
     end
 

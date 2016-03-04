@@ -16,13 +16,6 @@ describe JourneyWalker::Journey do
   let(:services) { { os_service: double } }
   let(:journey) { described_class.new(config, services) }
 
-  it 'should raise an error when a non-defaulted parameter is missing' do
-    current_state = journey.start
-    JourneyWalkerTests.update_numeric_class_value(1)
-    expect { journey.perform_action(current_state[:name], 'save', action_params: {}) }
-      .to raise_error(JourneyWalker::JourneyError)
-  end
-
   it 'should execute the event data source call' do
     current_state = journey.start
     JourneyWalkerTests.update_numeric_class_value(1)
